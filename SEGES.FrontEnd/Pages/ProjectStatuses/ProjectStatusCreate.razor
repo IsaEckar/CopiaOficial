@@ -1,0 +1,4 @@
+﻿@page "/projectstatuses/create"
+<h3>Estados de Proyecto</h3>
+
+<FormWithName @ref="projectStatusForm" Label="Estado: " Model="status" OnValidSubmit="CreateAsync" ReturnAction="Return" />

@@ -5,7 +5,7 @@ using SEGES.FrontEnd.Repositories;
 using SEGES.Shared.Entities;
 using System.Net;
 
-namespace SIEGES.Frontend.Pages.States
+namespace SEGES.Frontend.Pages.States
 {
     public partial class StatesDetails
     {
