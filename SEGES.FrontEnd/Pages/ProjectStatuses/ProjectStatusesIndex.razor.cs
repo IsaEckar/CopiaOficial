@@ -4,9 +4,9 @@ using SEGES.FrontEnd.Repositories;
 using SEGES.Shared.Entities;
 using System.Net;
 
-namespace SIEGES.Frontend.Pages.ProjectStatuses
+namespace SIEGES.Frontend.Pages.States
 {
-    public partial class ProjectStatusesIndex
+    public partial class StatesDetails
     {
         private int currentPage = 1;
         private int totalPages;
