@@ -11,7 +11,7 @@ namespace SEGES.Shared
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            
+            base.OnModelCreating(modelBuilder);
 
             modelBuilder.Entity<City>()
                 .HasKey(c => c.CityId);
@@ -23,7 +23,42 @@ namespace SEGES.Shared
                 .IsUnique();
 
 
+            modelBuilder.Entity<Country>()
+                .HasKey(c => c.CountryId);
+            modelBuilder.Entity<Country>()
+                .Property(c => c.CountryId)
+                .ValueGeneratedOnAdd();
+            modelBuilder.Entity<Country>()
+                .HasIndex(x => x.Name)
+                .IsUnique();
 
+
+
+            modelBuilder.Entity<DocTraceability>()
+                .HasKey(uc => uc.DocTraceabilityId);
+            modelBuilder.Entity<DocTraceability>()
+                .Property(uc => uc.CreationDate)
+                .ValueGeneratedOnAdd().
+                HasDefaultValueSql("GETDATE()");
+            modelBuilder.Entity<DocTraceability>()
+                .HasOne(dc => dc.Type)
+                .WithMany()
+                .HasForeignKey(dc => dc.Type_Id);
+            modelBuilder.Entity<DocTraceability>()
+                .HasOne(dc => dc.Source)
+                .WithMany()
+                .HasForeignKey(dc => dc.Source_Id);
+
+
+            modelBuilder.Entity<Goal>()
+                .HasKey(g => g.GoalId);
+            modelBuilder.Entity<Goal>()
+                .Property(i => i.GoalId)
+                .ValueGeneratedOnAdd();
+            modelBuilder.Entity<Goal>()
+                .Property(g => g.CreationDate)
+                .ValueGeneratedOnAdd()
+                .HasDefaultValueSql("GETDATE()");
         }
 
         private void DisableCascadingDelete(ModelBuilder modelBuilder)
@@ -36,5 +71,7 @@ namespace SEGES.Shared
         }
 
         public DbSet<City> Cities { get; set; }
+        public DbSet<Country> Countries { get; set; }
+        public DbSet<DocTraceability> DocTraceabilities { get; set; }
     }
 }

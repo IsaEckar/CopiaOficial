@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SEGES.Shared.Interfaces
 {
-    public class IEntityWithName
+    public interface IEntityWithName
     {
         string Name { get; set; }
     }
