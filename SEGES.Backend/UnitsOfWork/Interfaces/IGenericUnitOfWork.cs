@@ -1,4 +1,7 @@
-﻿namespace SEGES.Backend.UnitsOfWork.Interfaces
+﻿using SEGES.Shared.DTOs;
+using SEGES.Shared.Entities;
+using SEGES.Shared.Responses;
+namespace SEGES.Backend.UnitsOfWork.Interfaces
 {
     public interface IGenericUnitOfWork<T> where T : class
     {
