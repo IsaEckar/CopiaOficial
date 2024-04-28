@@ -22,7 +22,6 @@ namespace SEGES.Shared
                 .HasIndex(x => new { x.StateId, x.Name })
                 .IsUnique();
 
-
             modelBuilder.Entity<Country>()
                 .HasKey(c => c.CountryId);
             modelBuilder.Entity<Country>()
@@ -31,8 +30,6 @@ namespace SEGES.Shared
             modelBuilder.Entity<Country>()
                 .HasIndex(x => x.Name)
                 .IsUnique();
-
-
 
             modelBuilder.Entity<DocTraceability>()
                 .HasKey(uc => uc.DocTraceabilityId);
@@ -48,7 +45,6 @@ namespace SEGES.Shared
                 .HasOne(dc => dc.Source)
                 .WithMany()
                 .HasForeignKey(dc => dc.Source_Id);
-
 
             modelBuilder.Entity<Goal>()
                 .HasKey(g => g.GoalId);

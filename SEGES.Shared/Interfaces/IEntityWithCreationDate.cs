@@ -9,23 +9,6 @@ namespace SEGES.Shared.Interfaces
 {
     public interface IEntityWithCreationDate
     {
-        public int GoalId { get; set; }
-
-        [Display(Name = "Objetivo")]
-        [MaxLength(50, ErrorMessage = "El campo {0} no puede tener más de {1} caracteres.")]
-        [Required(ErrorMessage = "El campo {0} es requerido.")]
-        public string GoalName { get; set; }
-
-        [Display(Name = "Descripción")]
-        [MaxLength(4000, ErrorMessage = "El campo {0} no puede tener más de {1} caracteres.")]
-        [Required(ErrorMessage = "El campo {0} es requerido.")]
-        public string GoalDescription { get; set; }
-
-
-        public DateTime CreationDate { get; set; }
-
-        public ICollection<Rel_IssueGoal> IssueGoals { get; set; }
-        public ICollection<KPI> KPIs { get; set; }
-        public ICollection<Requirement> Requirements { get; set; }
+        DateTime CreationDate { get; set; }
     }
 }
