@@ -48,7 +48,7 @@ namespace SEGES.Backend.Repositories.Implementations
             };
         }
 
-        public override async Task<ActionResponse<int>> GetTotalPagesAsync(PaginatioDTO pagination)
+        public override async Task<ActionResponse<int>> GetTotalPagesAsync(PaginationDTO pagination)
         {
             var queryable = _context.Countries.AsQueryable();
 
@@ -92,5 +92,6 @@ namespace SEGES.Backend.Repositories.Implementations
                 .OrderBy(c => c.Name)
                 .ToListAsync();
         }
+
     }
 }

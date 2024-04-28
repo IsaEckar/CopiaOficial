@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using SEGES.Backend.Repositories.Interfaces;
 using SEGES.Backend.UnitsOfWork.Interfaces;
 using SEGES.Shared.Entities;
 
