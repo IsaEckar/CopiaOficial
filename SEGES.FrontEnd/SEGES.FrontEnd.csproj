@@ -16,4 +16,8 @@
     <ProjectReference Include="..\SEGES.Shared\SEGES.Shared.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Pages\HUPublicationStatuses\" />
+  </ItemGroup>
+
 </Project>
