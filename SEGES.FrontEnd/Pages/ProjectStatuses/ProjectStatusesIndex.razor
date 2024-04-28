@@ -1,0 +1,39 @@
+﻿@page "/ProjectStatuses"
+<h3>Estado de Proyectos</h3>
+
+<div class="mb-3">
+    <a class="btn btn-primary" href="/ProjectStatuses/create">Nuevo Estado</a>
+</div>
+
+<GenericList2 MyList="ProjectStatuses">
+    <Loading>
+        <div class="d-flex justify-content-center align-itmes-center">
+            <img src="https://i.gifer.com/ZKZg.gif" alt="Cargando..." />
+        </div>
+    </Loading>
+    <Body>
+        <Pagination CurrentPage="currentPage"
+                    TotalPages="totalPages"
+                    SelectedPage="SelectedPageAsync" />
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Estado</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var status in ProjectStatuses!)
+                {
+                    <tr>
+
+                        <td>@status.Name</td>
+                        <td>
+                            <a class="btn btn-warning">Editar</a>
+                            <button @onclick=@( () => DeleteAsync(status) ) class="btn btn-sm btn-danger">Borrar</button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </Body>
+</GenericList2>
