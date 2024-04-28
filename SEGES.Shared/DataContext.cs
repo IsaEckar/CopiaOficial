@@ -135,8 +135,28 @@ namespace SEGES.Shared
             }
         }
 
-        public DbSet<City> Cities { get; set; }
         public DbSet<Country> Countries { get; set; }
+        public DbSet<State> States { get; set; }
+        public DbSet<City> Cities { get; set; }
+        public DbSet<User> Users { get; set; }
+        public DbSet<Role> Roles { get; set; }
+        public DbSet<Module> Modules { get; set; }
+        public DbSet<Permission> Permissions { get; set; }
+        public DbSet<Issue> Issues { get; set; }
+        public DbSet<KPI> KPIs { get; set; }
+        public DbSet<Project> Projects { get; set; }
+        public DbSet<Requirement> Requirements { get; set; }
+        public DbSet<UseCase> UseCases { get; set; }
+        public DbSet<UserStory> UserStories { get; set; }
         public DbSet<DocTraceability> DocTraceabilities { get; set; }
+        public DbSet<HUStatus> HUStatuses { get; set; }
+        public DbSet<HUPublicationStatus> HUPublicationStatuses { get; set; }
+        public DbSet<HUPriority> HUPriorities { get; set; }
+        public DbSet<Rel_IssueGoal> Rel_IssueGoals { get; set; }
+        public DbSet<Rel_RolPermission> Rel_RolPermissions { get; set; }
+        public DbSet<DocTraceabilityType> DocTraceabilityTypes { get; set; }
+        public DbSet<HUApprovalStatus> HUApprovalStatuses { get; set; }
+        public DbSet<ProjectStatus> ProjectStatuses { get; set; }
     }
+}
 }
