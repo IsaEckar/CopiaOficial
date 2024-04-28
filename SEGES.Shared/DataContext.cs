@@ -48,6 +48,17 @@ namespace SEGES.Shared
                 .HasOne(dc => dc.Source)
                 .WithMany()
                 .HasForeignKey(dc => dc.Source_Id);
+
+
+            modelBuilder.Entity<Goal>()
+                .HasKey(g => g.GoalId);
+            modelBuilder.Entity<Goal>()
+                .Property(i => i.GoalId)
+                .ValueGeneratedOnAdd();
+            modelBuilder.Entity<Goal>()
+                .Property(g => g.CreationDate)
+                .ValueGeneratedOnAdd()
+                .HasDefaultValueSql("GETDATE()");
         }
 
         private void DisableCascadingDelete(ModelBuilder modelBuilder)
