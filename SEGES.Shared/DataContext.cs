@@ -124,6 +124,8 @@ namespace SEGES.Shared
             modelBuilder.Entity<DocTraceabilityType>()
                 .HasKey(us => us.DocTraceabilityTypeId);
             DisableCascadingDelete(modelBuilder);
+
+
         }
 
         private void DisableCascadingDelete(ModelBuilder modelBuilder)
