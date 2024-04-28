@@ -1,0 +1,41 @@
+﻿@page "/HUPublicationStatus"
+<h3>Estado de Publicación de Historias de Usuario</h3>
+
+
+<div class="mb-3">
+    <a class="btn btn-primary" href="/HUPublicationStatus/create">Nuevo Esatdo</a>
+</div>
+
+<GenericList2 MyList="PublicationStatuses">
+    <Loading>
+        <div class="d-flex justify-content-center align-itmes-center">
+            <img src="https://i.gifer.com/ZKZg.gif" alt="Cargando..." />
+        </div>
+    </Loading>
+    <Body>
+        <Pagination CurrentPage="currentPage"
+                    TotalPages="totalPages"
+                    SelectedPage="SelectedPageAsync" />
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Estado</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var status in PublicationStatuses!)
+                {
+                    <tr>
+
+                        <td>@status.Name</td>
+                        <td>
+                            <a class="btn btn-warning">Editar</a>
+                            <button @onclick=@( () => DeleteAsync(status) ) class="btn btn-sm btn-danger">Borrar</button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </Body>
+</GenericList2>
