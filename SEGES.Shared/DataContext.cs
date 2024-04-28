@@ -1,9 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using SEGES.Shared.Entities;
 
 namespace SEGES.Shared
 {
@@ -11,11 +7,22 @@ namespace SEGES.Shared
     {
         public DataContext(DbContextOptions<DataContext> options) : base(options)
         {
-
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            
+
+            modelBuilder.Entity<City>()
+                .HasKey(c => c.CityId);
+            modelBuilder.Entity<City>()
+                .Property(c => c.CityId)
+                .ValueGeneratedOnAdd();
+            modelBuilder.Entity<City>()
+                .HasIndex(x => new { x.StateId, x.Name })
+                .IsUnique();
+
+
 
         }
 
@@ -27,5 +34,7 @@ namespace SEGES.Shared
                 relationship.DeleteBehavior = DeleteBehavior.Restrict;
             }
         }
+
+        public DbSet<City> Cities { get; set; }
     }
 }
