@@ -362,3 +362,4 @@ MigrationBackup/
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
 /SEGES.Backend/appsettings.json
+/SEGES.FrontEnd/Program.cs
