@@ -1,6 +1,10 @@
+using CurrieTechnologies.Razor.SweetAlert2;
 using Microsoft.AspNetCore.Components;
+using SEGES.FrontEnd.Repositories;
 using System.Diagnostics.Metrics;
 using System.Net;
+using Azure;
+
 
 namespace SEGES.FrontEnd.Pages.Countries
 {
@@ -9,6 +13,7 @@ namespace SEGES.FrontEnd.Pages.Countries
         private int currentPage = 1;
         private int totalPages;
 
+        
         [Inject] private IRepository Repository { get; set; } = null!;
         [Inject] private SweetAlertService SweetAlertService { get; set; } = null!;
         [Inject] private NavigationManager NavigationManager { get; set; } = null!;
