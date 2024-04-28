@@ -1,0 +1,5 @@
+﻿@page "/modules/create"
+
+<h3>Crear Nuevo Módulo</h3>
+
+<FormWithName @ref="moduleForm" Label="Módulo: " Model="module" OnValidSubmit="CreateAsync" ReturnAction="Return" />
