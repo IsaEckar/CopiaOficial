@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SEGES.Shared.Interfaces
 {
-    public class ISaveDBChanges
+    public interface ISaveDBChanges
     {
         public void SaveDBChanges();
     }

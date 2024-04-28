@@ -1,13 +1,14 @@
-﻿using System;
+﻿using SEGES.Shared.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SEGES.Shared.Interfaces
+namespace SEGES.Shared.Entities
 {
-    public interface IEntityWithCreationDate
+    internal class Goal : IEntityWithCreationDate
     {
         public int GoalId { get; set; }
 

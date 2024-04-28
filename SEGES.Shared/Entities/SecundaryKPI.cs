@@ -1,31 +1,32 @@
-﻿using System;
+﻿using SEGES.Shared.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SEGES.Shared.Interfaces
+namespace SEGES.Shared.Entities
 {
-    public interface IEntityWithCreationDate
+    public class SecundaryKPI : IEntityWithCreationDate
     {
-        public int GoalId { get; set; }
+        public int SecundaryKPI_Id { get; set; }
 
-        [Display(Name = "Objetivo")]
+        [Display(Name = "KPI Secundario")]
         [MaxLength(50, ErrorMessage = "El campo {0} no puede tener más de {1} caracteres.")]
         [Required(ErrorMessage = "El campo {0} es requerido.")]
-        public string GoalName { get; set; }
+        public string SecundaryKPI_Name { get; set; }
 
-        [Display(Name = "Descripción")]
+        [Display(Name = "Descripción KPI Secundario")]
         [MaxLength(4000, ErrorMessage = "El campo {0} no puede tener más de {1} caracteres.")]
         [Required(ErrorMessage = "El campo {0} es requerido.")]
-        public string GoalDescription { get; set; }
+        public string SecundaryKPI_Description { get; set; }
 
+        public string? SecundaryKPI_Formula { get; set; }
 
         public DateTime CreationDate { get; set; }
 
-        public ICollection<Rel_IssueGoal> IssueGoals { get; set; }
-        public ICollection<KPI> KPIs { get; set; }
-        public ICollection<Requirement> Requirements { get; set; }
+        public int KPI_Id { get; set; }
+        public KPI KPI { get; set; }
     }
 }
