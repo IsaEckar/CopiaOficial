@@ -36,7 +36,7 @@ namespace SEGES.FrontEnd.Pages.States
                 ShowConfirmButton = true,
                 Timer = 3000
             });
-            await toast.FireAsync(icon: SweetAlertIcon.Success, message: "Registro creado con éxito");
+            await toast.FireAsync(icon: SweetAlertIcon.Success, message: "Registro creado con ï¿½xito");
 
 
         }

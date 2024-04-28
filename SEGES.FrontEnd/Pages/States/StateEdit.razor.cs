@@ -51,7 +51,7 @@ namespace SEGES.FrontEnd.Pages.States
                 ShowConfirmButton = true,
                 Timer = 3000
             });
-            await toast.FireAsync(icon: SweetAlertIcon.Success, message: "Cambios guardados con éxito.");
+            await toast.FireAsync(icon: SweetAlertIcon.Success, message: "Cambios guardados con ï¿½xito.");
         }
 
         private void Return()
