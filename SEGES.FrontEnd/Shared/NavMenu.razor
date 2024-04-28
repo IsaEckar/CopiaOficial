@@ -1,6 +1,6 @@
 ﻿<div class="top-row ps-3 navbar navbar-dark">
     <div class="container-fluid">
-        <a class="navbar-brand" href="">SEGES.FrontEnd</a>
+        <a class="navbar-brand" href="">SIEGES.Frontend</a>
         <button title="Navigation menu" class="navbar-toggler" @onclick="ToggleNavMenu">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -20,8 +20,43 @@
             </NavLink>
         </div>
         <div class="nav-item px-3">
-            <NavLink class="nav-link" href="fetchdata">
-                <span class="oi oi-list-rich" aria-hidden="true"></span> Fetch data
+            <NavLink class="nav-link" href="countries">
+                <span class="oi oi-list-rich" aria-hidden="true"></span> Países
+            </NavLink>
+        </div>
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="DocTraceabilityType">
+                <span class="oi oi-list-rich" aria-hidden="true"></span> Tipos de Traza Documental
+            </NavLink>
+        </div>
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="HUApprovalStatus">
+                <span class="oi oi-list-rich" aria-hidden="true"></span> Estado de Aprobación de Historias de Usuario
+            </NavLink>
+        </div>
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="HUPriorities">
+                <span class="oi oi-list-rich" aria-hidden="true"></span>Prioridades de Historias de Usuario
+            </NavLink>
+        </div>
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="HUPublicationStatus">
+                <span class="oi oi-list-rich" aria-hidden="true"></span>Estados de Publicación de Historias de Usuario
+            </NavLink>
+        </div>
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="HUStatus">
+                <span class="oi oi-list-rich" aria-hidden="true"></span>Estados de Historias de Usuario
+            </NavLink>
+        </div>
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="modules">
+                <span class="oi oi-list-rich" aria-hidden="true"></span>Módulos del Sistema
+            </NavLink>
+        </div>
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="ProjectStatuses">
+                <span class="oi oi-list-rich" aria-hidden="true"></span>Estado de Proyectos
             </NavLink>
         </div>
     </nav>
@@ -37,3 +72,4 @@
         collapseNavMenu = !collapseNavMenu;
     }
 }
+
