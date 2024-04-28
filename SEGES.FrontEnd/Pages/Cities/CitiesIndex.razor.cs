@@ -4,6 +4,7 @@ using SEGES.FrontEnd.Repositories;
 using SEGES.Shared.Entities;
 using System.Net;
 
+
 namespace SEGES.FrontEnd.Pages.Cities
 {
     public partial class CitiesIndex
