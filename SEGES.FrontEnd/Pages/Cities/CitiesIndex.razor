@@ -1,0 +1,39 @@
+﻿@page "/cities"
+
+<h3>Ciudades</h3>
+
+<div class="mb-3">
+    <a class="btn btn-primary" href="/cities/create">Nueva Ciudad</a>
+</div>
+
+
+<div>
+<GenericList2 MyList="Cities">
+    <Loading>
+        <div class="d-flex justify-content-center align-itmes-center">
+            <img src="https://i.gifer.com/ZKZg.gif" alt="Cargando..." />
+        </div>
+    </Loading>
+    <Body>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Ciudad</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var city in Cities!)
+                {
+                    <tr>
+                        <td>@city.Name</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </Body>
+</GenericList2>
+<Pagination CurrentPage="currentPage"
+            TotalPages="totalPages"
+            SelectedPage="SelectedPageAsync" />
+</div>
