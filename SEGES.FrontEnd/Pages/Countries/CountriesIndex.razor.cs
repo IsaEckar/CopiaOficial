@@ -1,7 +1,6 @@
 using CurrieTechnologies.Razor.SweetAlert2;
 using Microsoft.AspNetCore.Components;
 using SEGES.FrontEnd.Repositories;
-using System.Diagnostics.Metrics;
 using System.Net;
 using Azure;
 
