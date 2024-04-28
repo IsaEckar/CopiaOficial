@@ -3,10 +3,11 @@ using SEGES.Backend.UnitsOfWork.Implementations;
 using SEGES.Shared.Entities;
 using SEGES.Shared.Responses;
 using SEGES.Shared;
+using Microsoft.EntityFrameworkCore;
 
 namespace SEGES.Backend.Repositories.Interfaces
 {
-    public class HUPrioritiesRepository : GenericRepository<HUPriority>,  IHUPrioritiesRepository
+    public class HUPrioritiesRepository : GenericRepository<HUPriority>, IHUPrioritiesRepository
     {
         private readonly DataContext _context;
         public HUPrioritiesRepository(DataContext context) : base(context)
