@@ -1,5 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using SEGES.Backend.Repositories.Implementations;
+using SEGES.Backend.Repositories.Interfaces;
 using SEGES.Backend.UnitsOfWork.Interfaces;
+using SEGES.Shared;
 using SEGES.Shared.Entities;
 
 namespace SEGES.Backend.Controllers

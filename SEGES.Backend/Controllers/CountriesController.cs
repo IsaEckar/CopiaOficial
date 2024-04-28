@@ -1,6 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 using SEGES.Backend.UnitsOfWork.Interfaces;
-using System.Diagnostics.Metrics;
+using SEGES.Shared;
+using SEGES.Shared.DTOs;
+using SEGES.Shared.Entities;
+using System.Runtime.InteropServices;
 
 namespace SEGES.Backend.Controllers
 {
