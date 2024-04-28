@@ -40,9 +40,28 @@ builder.Services.AddScoped<IHuApprovalStatusUnitOfWork, HuApprovalStatusUnitOfWo
 builder.Services.AddScoped<IHUPrioritiesRepository, HUPrioritiesRepository>();
 builder.Services.AddScoped<IHUPrioritiesUnitOfWork, HUPrioritiesUnitOfWork>();
 
-var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+builder.Services.AddTransient<SeedDb>();
+
+var app = builder.Build();
+app.UseCors(x => x
+.AllowAnyMethod()
+.AllowAnyHeader()
+.SetIsOriginAllowed(o => true)
+.AllowCredentials());
+
+SeedData(app);
+
+void SeedData(WebApplication app)
+{
+    var scopedFactory = app.Services.GetService<IServiceScopeFactory>();
+    using var scope = scopedFactory!.CreateScope();
+    var service = scope.ServiceProvider.GetService<SeedDb>();
+    service!.SeedAsync().Wait();
+}
+
+
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
