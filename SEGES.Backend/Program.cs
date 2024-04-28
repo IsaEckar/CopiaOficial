@@ -25,7 +25,7 @@ builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepositor
 builder.Services.AddScoped<ICountriesRepository, CountriesRepository>();
 builder.Services.AddScoped<ICountriesUnitOfWork, CountriesUnitOfWork>();
 
-builder.Services.AddScoped<IStateRepository, StatesRepository();
+builder.Services.AddScoped<IStateRepository, StatesRepository>();
 builder.Services.AddScoped<IStateUnitOfWork, StatesUnitOfWork>();
 
 builder.Services.AddScoped<ICitiesRepository, CitiesRepository>();

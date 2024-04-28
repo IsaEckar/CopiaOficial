@@ -1,4 +1,7 @@
-﻿namespace SEGES.Backend.Repositories.Interfaces
+﻿using SEGES.Shared.DTOs;
+using SEGES.Shared.Responses;
+
+namespace SEGES.Backend.Repositories.Interfaces
 {
     public interface IGenericRepository<T> where T : class
     {

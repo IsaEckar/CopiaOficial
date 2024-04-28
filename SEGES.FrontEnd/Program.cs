@@ -2,6 +2,7 @@ using CurrieTechnologies.Razor.SweetAlert2;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using SEGES.FrontEnd;
+using SEGES.FrontEnd.Repositories;
 
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);

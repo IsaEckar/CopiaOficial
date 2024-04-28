@@ -1,10 +1,12 @@
 ﻿using SEGES.Backend.Repositories.Interfaces;
+using SEGES.Backend.UnitsOfWork.Interfaces;
+using SEGES.Shared.DTOs;
 using SEGES.Shared.Entities;
 using SEGES.Shared.Responses;
 
 namespace SEGES.Backend.UnitsOfWork.Implementations
 {
-    public class StatesUnitOfWork
+    public class StatesUnitOfWork : GenericUnitOfWork<State>, IStateUnitOfWork
     {
         private readonly IStateRepository _statesRepository;
 
