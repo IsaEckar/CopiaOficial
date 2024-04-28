@@ -84,6 +84,20 @@ namespace SEGES.FrontEnd.Pages.Countries
             totalPages = responseHttp.Response;
         }
 
+        private async Task CleanFilterAsync()
+        {
+            Filter = string.Empty;
+            await ApplyFilterAsync();
+        }
+
+        private async Task ApplyFilterAsync()
+        {
+            int page = 1;
+            await LoadAsync(page);
+            await SelectedPageAsync(page);
+        }
+
+
         private async Task DeleteAsycn(Country country)
         {
             var result = await SweetAlertService.FireAsync(new SweetAlertOptions
