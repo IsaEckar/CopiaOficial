@@ -62,6 +62,9 @@ namespace SEGES.Shared
 
             modelBuilder.Entity<HUApprovalStatus>()
                 .HasKey(us => us.HUApprovalStatusId);
+
+            modelBuilder.Entity<HUPriority>()
+                .HasKey(us => us.PriorityId);
         }
 
         private void DisableCascadingDelete(ModelBuilder modelBuilder)
@@ -77,5 +80,6 @@ namespace SEGES.Shared
         public DbSet<Country> Countries { get; set; }
         public DbSet<DocTraceability> DocTraceabilities { get; set; }
         public DbSet<HUApprovalStatus> HUApprovalStatuses { get; set; }
+        public DbSet<HUPriority> HUPriorities { get; set; }
     }
 }
