@@ -363,3 +363,5 @@ MigrationBackup/
 FodyWeavers.xsd
 /SEGES.Backend/appsettings.json
 /SEGES.FrontEnd/Program.cs
+/SEGES.FrontEnd/Client/Program.cs
+/SEGES.Backend/Program.cs
