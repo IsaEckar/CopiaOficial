@@ -4,7 +4,8 @@ using SEGES.FrontEnd.Repositories;
 using SEGES.Shared.Entities;
 using SEGES.FrontEnd.Shared;
 
-namespace SEGES.Frontend.Pages.ProjectStatuses
+
+namespace SEGES.FrontEnd.Pages.ProjectStatuses
 {
     public partial class ProjectStatusCreate
     {
@@ -34,7 +35,7 @@ namespace SEGES.Frontend.Pages.ProjectStatuses
                 ShowConfirmButton = true,
                 Timer = 3000
             });
-            await toast.FireAsync(icon: SweetAlertIcon.Success, message: "Registro creado con éxito");
+            await toast.FireAsync(icon: SweetAlertIcon.Success, message: "Registro creado con ï¿½xito");
         }
 
         private void Return()

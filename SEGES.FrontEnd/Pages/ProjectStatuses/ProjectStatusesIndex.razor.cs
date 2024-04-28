@@ -4,7 +4,7 @@ using SEGES.FrontEnd.Repositories;
 using SEGES.Shared.Entities;
 using System.Net;
 
-namespace SIEGES.FrontEnd.Pages.ProjectStatuses
+namespace SEGES.FrontEnd.Pages.ProjectStatuses
 {
     public partial class ProjectStatusesIndex
     {
@@ -15,7 +15,7 @@ namespace SIEGES.FrontEnd.Pages.ProjectStatuses
         [Inject] private NavigationManager NavigationManager { get; set; } = null!;
         [Parameter, SupplyParameterFromQuery] public string Page { get; set; } = string.Empty;
         public List<ProjectStatus>? ProjectStatuses { get; set; }
-        protected override async Task OnInitializedAsync()
+       protected override async Task OnInitializedAsync()
         {
             await LoadAsync();
         }
@@ -75,8 +75,8 @@ namespace SIEGES.FrontEnd.Pages.ProjectStatuses
         {
             var result = await SweetAlertService.FireAsync(new SweetAlertOptions
             {
-                Title = "Confirmación",
-                Text = $"¿Estas seguro de querer borrar el estado: {projectStatus.Name}?",
+                Title = "ConfirmaciÃ³n",
+                Text = $"Â¿Estas seguro de querer borrar el estado: {projectStatus.Name}?",
                 Icon = SweetAlertIcon.Question,
                 ShowCancelButton = true,
             });
@@ -108,7 +108,7 @@ namespace SIEGES.FrontEnd.Pages.ProjectStatuses
                 ShowConfirmButton = true,
                 Timer = 3000
             });
-            await toast.FireAsync(icon: SweetAlertIcon.Success, message: "Registro borrado con éxito.");
+            await toast.FireAsync(icon: SweetAlertIcon.Success, message: "Registro borrado con Ã©xito.");
         }
     }
 }

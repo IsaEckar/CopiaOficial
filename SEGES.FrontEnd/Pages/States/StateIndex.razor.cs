@@ -23,8 +23,8 @@ namespace SEGES.FrontEnd.Pages.States
         {
             var result = await SweetAlertService.FireAsync(new SweetAlertOptions
             {
-                Title = "Confirmación",
-                Text = $"¿Estas seguro de querer borrar el estado: {state.Name}?",
+                Title = "Confirmaciï¿½n",
+                Text = $"ï¿½Estas seguro de querer borrar el estado: {state.Name}?",
                 Icon = SweetAlertIcon.Question,
                 ShowCancelButton = true,
             });
@@ -56,7 +56,7 @@ namespace SEGES.FrontEnd.Pages.States
                 ShowConfirmButton = true,
                 Timer = 3000
             });
-            await toast.FireAsync(icon: SweetAlertIcon.Success, message: "Registro borrado con éxito.");
+            await toast.FireAsync(icon: SweetAlertIcon.Success, message: "Registro borrado con ï¿½xito.");
         }
 
     }

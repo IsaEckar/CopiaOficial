@@ -123,8 +123,8 @@ namespace SEGES.FrontEnd.Pages.States
         {
             var result = await SweetAlertService.FireAsync(new SweetAlertOptions
             {
-                Title = "Confirmación",
-                Text = $"¿Realmente deseas eliminar la ciudad? {city.Name}",
+                Title = "Confirmaciï¿½n",
+                Text = $"ï¿½Realmente deseas eliminar la ciudad? {city.Name}",
                 Icon = SweetAlertIcon.Question,
                 ShowCancelButton = true,
                 CancelButtonText = "No",
@@ -156,7 +156,7 @@ namespace SEGES.FrontEnd.Pages.States
                 ShowConfirmButton = true,
                 Timer = 3000
             });
-            await toast.FireAsync(icon: SweetAlertIcon.Success, message: "Registro borrado con éxito.");
+            await toast.FireAsync(icon: SweetAlertIcon.Success, message: "Registro borrado con ï¿½xito.");
         }
     }
 }

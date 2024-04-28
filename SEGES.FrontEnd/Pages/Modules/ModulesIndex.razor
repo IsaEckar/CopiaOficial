@@ -1,5 +1,42 @@
-﻿@page "/modules/create"
+﻿@page "/modules"
+<h3>Módulos del Sistema</h3>
 
-<h3>Crear Nuevo Módulo</h3>
+<div class="mb-3">
+    <a class="btn btn-primary" href="/modules/create">Nuevo Módulo</a>
+</div>
 
-<FormWithName @ref="moduleForm" Label="Módulo: " Model="module" OnValidSubmit="CreateAsync" ReturnAction="Return" />
+<GenericList2 MyList="ModulesList">
+    <Loading>
+        <div class="d-flex justify-content-center align-itmes-center">
+            <img src="https://i.gifer.com/ZKZg.gif" alt="Cargando..." />
+        </div>
+    </Loading>
+    <Body>
+        <Pagination CurrentPage="currentPage"
+                    TotalPages="totalPages"
+                    SelectedPage="SelectedPageAsync" />
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Módulo</th>
+                    <th>Descripción</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var module in ModulesList!)
+                {
+                    <tr>
+
+                        <td>@module.Name</td>
+                        <td>@module.ModuleDescription</td>
+                        <td>
+                            <a class="btn btn-warning">Editar</a>
+                            <button @onclick=@( () => DeleteAsync(module) ) class="btn btn-sm btn-danger">Borrar</button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </Body>
+</GenericList2>
+
