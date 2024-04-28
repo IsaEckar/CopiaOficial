@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SEGES.Shared.Interfaces
 {
-    public class IEntityWithCreationDate
+    public interface IEntityWithCreationDate
     {
         DateTime CreationDate { get; set; }
     }

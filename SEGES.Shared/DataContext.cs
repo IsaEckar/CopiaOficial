@@ -32,6 +32,22 @@ namespace SEGES.Shared
                 .HasIndex(x => x.Name)
                 .IsUnique();
 
+
+
+            modelBuilder.Entity<DocTraceability>()
+                .HasKey(uc => uc.DocTraceabilityId);
+            modelBuilder.Entity<DocTraceability>()
+                .Property(uc => uc.CreationDate)
+                .ValueGeneratedOnAdd().
+                HasDefaultValueSql("GETDATE()");
+            modelBuilder.Entity<DocTraceability>()
+                .HasOne(dc => dc.Type)
+                .WithMany()
+                .HasForeignKey(dc => dc.Type_Id);
+            modelBuilder.Entity<DocTraceability>()
+                .HasOne(dc => dc.Source)
+                .WithMany()
+                .HasForeignKey(dc => dc.Source_Id);
         }
 
         private void DisableCascadingDelete(ModelBuilder modelBuilder)
@@ -45,5 +61,6 @@ namespace SEGES.Shared
 
         public DbSet<City> Cities { get; set; }
         public DbSet<Country> Countries { get; set; }
+        public DbSet<DocTraceability> DocTraceabilities { get; set; }
     }
 }
