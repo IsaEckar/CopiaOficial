@@ -20,10 +20,8 @@ namespace SEGES.Shared.Entities
 
         public string? ModuleDescription { get; set; } = null;
 
-
-
         public List<Permission> Permissions { get; set; }
         public DateTime CreationDate { get; set; }
-        //public List<Module> Modules { get; } = null!;
+
     }
 }
