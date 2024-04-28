@@ -1,9 +1,10 @@
-﻿using SEGES.Shared.Entities;
+﻿using SEGES.Shared.DTOs;
+using SEGES.Shared.Entities;
 using SEGES.Shared.Responses;
 
 namespace SEGES.Backend.Repositories.Interfaces
 {
-    public class IStateRepository
+    public interface IStateRepository
     {
         Task<ActionResponse<State>> GetAsync(int id);
 

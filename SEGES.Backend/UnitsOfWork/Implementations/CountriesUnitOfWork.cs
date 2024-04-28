@@ -1,5 +1,6 @@
 ﻿using SEGES.Backend.Repositories.Interfaces;
 using SEGES.Backend.UnitsOfWork.Interfaces;
+using SEGES.Shared.DTOs;
 using SEGES.Shared.Entities;
 using SEGES.Shared.Responses;
 

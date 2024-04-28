@@ -1,4 +1,7 @@
-﻿using SEGES.Backend.UnitsOfWork.Interfaces;
+﻿using SEGES.Backend.Repositories.Interfaces;
+using SEGES.Backend.UnitsOfWork.Interfaces;
+using SEGES.Shared.DTOs;
+using SEGES.Shared.Responses;
 
 namespace SEGES.Backend.UnitsOfWork.Implementations
 {
