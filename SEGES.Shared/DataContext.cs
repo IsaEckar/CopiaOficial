@@ -22,7 +22,6 @@ namespace SEGES.Shared
                 .HasIndex(x => new { x.StateId, x.Name })
                 .IsUnique();
 
-
             modelBuilder.Entity<Country>()
                 .HasKey(c => c.CountryId);
             modelBuilder.Entity<Country>()
@@ -50,71 +49,7 @@ namespace SEGES.Shared
                 .ValueGeneratedOnAdd()
                 .HasDefaultValueSql("GETDATE()");
 
-            modelBuilder.Entity<Permission>()
-               .HasKey(p => p.Id);
-            modelBuilder.Entity<Permission>()
-                .Property(p => p.Id)
-                .ValueGeneratedOnAdd();
-            modelBuilder.Entity<Permission>()
-                .HasIndex(p => p.Name)
-                .IsUnique();
-            modelBuilder.Entity<Permission>()
-                .Property(p => p.CreationDate)
-                .ValueGeneratedOnAdd()
-                .HasDefaultValueSql("GETDATE()");
 
-
-            modelBuilder.Entity<Project>()
-               .HasKey(c => c.ProjectId);
-            modelBuilder.Entity<Project>()
-                .Property(c => c.ProjectId)
-                .ValueGeneratedOnAdd();
-            modelBuilder.Entity<Project>()
-                .HasIndex(x => x.ProjectName)
-                .IsUnique();
-            modelBuilder.Entity<Project>()
-                .Property(p => p.CreationDate)
-                .ValueGeneratedOnAdd()
-                .HasDefaultValueSql("GETDATE()");
-            modelBuilder.Entity<Project>()
-                .HasOne(p => p.ProjectManager)
-                .WithMany()
-                .HasForeignKey(p => p.ProjectManager_ID)
-                .OnDelete(DeleteBehavior.Restrict);
-            modelBuilder.Entity<Project>()
-                .HasOne(p => p.RequirementsEngineer)
-                .WithMany()
-                .HasForeignKey(p => p.RequirementsEngineer_ID)
-                .OnDelete(DeleteBehavior.Restrict);
-            modelBuilder.Entity<Project>()
-                .HasOne(p => p.StakeHolder)
-                .WithMany()
-                .HasForeignKey(p => p.StakeHolder_ID)
-                .OnDelete(DeleteBehavior.Restrict);
-            modelBuilder.Entity<Project>()
-                .HasOne(p => p.ProjectStatus)
-                .WithMany()
-                .HasForeignKey(p => p.ProjectStatus_ID);
-
-            modelBuilder.Entity<Issue>()
-               .HasOne(i => i.Project)
-               .WithMany(p => p.Issues)
-               .HasForeignKey(i => i.Project_ID);
-            modelBuilder.Entity<Issue>()
-                .Property(i => i.CreationDate)
-                .ValueGeneratedOnAdd()
-                .HasDefaultValueSql("GETDATE()");
-
-            modelBuilder.Entity<KPI>()
-              .HasKey(k => k.KPI_ID);
-            modelBuilder.Entity<KPI>()
-                .Property(k => k.CreationDate)
-                .ValueGeneratedOnAdd()
-                .HasDefaultValueSql("GETDATE()");
-            modelBuilder.Entity<KPI>()
-                .HasOne(k => k.Goal)
-                .WithMany(g => g.KPIs)
-                .HasForeignKey(k => k.Goal_Id);
 
             modelBuilder.Entity<DocTraceability>()
                .HasKey(uc => uc.DocTraceabilityId);
@@ -130,13 +65,6 @@ namespace SEGES.Shared
                 .HasOne(dc => dc.Source)
                 .WithMany()
                 .HasForeignKey(dc => dc.Source_Id);
-
-
-            modelBuilder.Entity<HUPublicationStatus>()
-             .HasKey(us => us.HUPublicationStatusId);
-
-            modelBuilder.Entity<HUStatus>()
-                .HasKey(us => us.HUStatusId);
 
 
             modelBuilder.Entity<Goal>()
@@ -167,6 +95,9 @@ namespace SEGES.Shared
 
             modelBuilder.Entity<HUApprovalStatus>()
                 .HasKey(us => us.HUApprovalStatusId);
+
+            modelBuilder.Entity<HUPriority>()
+                .HasKey(us => us.PriorityId);
         }
 
         private void DisableCascadingDelete(ModelBuilder modelBuilder)
@@ -182,5 +113,6 @@ namespace SEGES.Shared
         public DbSet<Country> Countries { get; set; }
         public DbSet<DocTraceability> DocTraceabilities { get; set; }
         public DbSet<HUApprovalStatus> HUApprovalStatuses { get; set; }
+        public DbSet<HUPriority> HUPriorities { get; set; }
     }
 }
