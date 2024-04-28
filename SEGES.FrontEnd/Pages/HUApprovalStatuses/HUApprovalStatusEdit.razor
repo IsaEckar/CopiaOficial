@@ -1,0 +1,12 @@
+﻿@page "/HUApprovalStatus/edit/{StatusId:int}"
+
+<h3>Editar Estado Aprobación Historia de usuario</h3>
+
+@if (status is null)
+{
+    <Loading />
+}
+else
+{
+    <FormWithName @ref="statusForm" Label="Estado:" Model="status" OnValidSubmit="SaveAsync" ReturnAction="Return" />
+}
