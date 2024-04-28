@@ -3,7 +3,7 @@ using SEGES.Shared.Entities;
 
 namespace SEGES.Shared
 {
-    internal class DataContext : DbContext
+    public class DataContext : DbContext
     {
         public DataContext(DbContextOptions<DataContext> options) : base(options)
         {
@@ -33,13 +33,95 @@ namespace SEGES.Shared
                 .IsUnique();
 
 
+            modelBuilder.Entity<Module>()
+                .HasKey(c => c.ModuleId);
+            modelBuilder.Entity<Module>()
+                .Property(c => c.ModuleId)
+                .ValueGeneratedOnAdd();
+            modelBuilder.Entity<Module>()
+                .HasIndex(x => x.Name)
+                .IsUnique();
+            modelBuilder.Entity<Module>()
+                .HasMany(m => m.Permissions)
+                .WithOne(p => p.Module)
+                .HasForeignKey(p => p.Module_ID);
+            modelBuilder.Entity<Module>()
+                .Property(k => k.CreationDate)
+                .ValueGeneratedOnAdd()
+                .HasDefaultValueSql("GETDATE()");
+
+            modelBuilder.Entity<Permission>()
+               .HasKey(p => p.Id);
+            modelBuilder.Entity<Permission>()
+                .Property(p => p.Id)
+                .ValueGeneratedOnAdd();
+            modelBuilder.Entity<Permission>()
+                .HasIndex(p => p.Name)
+                .IsUnique();
+            modelBuilder.Entity<Permission>()
+                .Property(p => p.CreationDate)
+                .ValueGeneratedOnAdd()
+                .HasDefaultValueSql("GETDATE()");
+
+
+            modelBuilder.Entity<Project>()
+               .HasKey(c => c.ProjectId);
+            modelBuilder.Entity<Project>()
+                .Property(c => c.ProjectId)
+                .ValueGeneratedOnAdd();
+            modelBuilder.Entity<Project>()
+                .HasIndex(x => x.ProjectName)
+                .IsUnique();
+            modelBuilder.Entity<Project>()
+                .Property(p => p.CreationDate)
+                .ValueGeneratedOnAdd()
+                .HasDefaultValueSql("GETDATE()");
+            modelBuilder.Entity<Project>()
+                .HasOne(p => p.ProjectManager)
+                .WithMany()
+                .HasForeignKey(p => p.ProjectManager_ID)
+                .OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<Project>()
+                .HasOne(p => p.RequirementsEngineer)
+                .WithMany()
+                .HasForeignKey(p => p.RequirementsEngineer_ID)
+                .OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<Project>()
+                .HasOne(p => p.StakeHolder)
+                .WithMany()
+                .HasForeignKey(p => p.StakeHolder_ID)
+                .OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<Project>()
+                .HasOne(p => p.ProjectStatus)
+                .WithMany()
+                .HasForeignKey(p => p.ProjectStatus_ID);
+
+            modelBuilder.Entity<Issue>()
+               .HasOne(i => i.Project)
+               .WithMany(p => p.Issues)
+               .HasForeignKey(i => i.Project_ID);
+            modelBuilder.Entity<Issue>()
+                .Property(i => i.CreationDate)
+                .ValueGeneratedOnAdd()
+                .HasDefaultValueSql("GETDATE()");
+
+            modelBuilder.Entity<KPI>()
+              .HasKey(k => k.KPI_ID);
+            modelBuilder.Entity<KPI>()
+                .Property(k => k.CreationDate)
+                .ValueGeneratedOnAdd()
+                .HasDefaultValueSql("GETDATE()");
+            modelBuilder.Entity<KPI>()
+                .HasOne(k => k.Goal)
+                .WithMany(g => g.KPIs)
+                .HasForeignKey(k => k.Goal_Id);
 
             modelBuilder.Entity<DocTraceability>()
-                .HasKey(uc => uc.DocTraceabilityId);
+               .HasKey(uc => uc.DocTraceabilityId);
             modelBuilder.Entity<DocTraceability>()
                 .Property(uc => uc.CreationDate)
-                .ValueGeneratedOnAdd().
-                HasDefaultValueSql("GETDATE()");
+                .ValueGeneratedOnAdd()
+                .HasDefaultValueSql("GETDATE()");
             modelBuilder.Entity<DocTraceability>()
                 .HasOne(dc => dc.Type)
                 .WithMany()
@@ -50,6 +132,13 @@ namespace SEGES.Shared
                 .HasForeignKey(dc => dc.Source_Id);
 
 
+            modelBuilder.Entity<HUPublicationStatus>()
+             .HasKey(us => us.HUPublicationStatusId);
+
+            modelBuilder.Entity<HUStatus>()
+                .HasKey(us => us.HUStatusId);
+
+
             modelBuilder.Entity<Goal>()
                 .HasKey(g => g.GoalId);
             modelBuilder.Entity<Goal>()
@@ -57,6 +146,22 @@ namespace SEGES.Shared
                 .ValueGeneratedOnAdd();
             modelBuilder.Entity<Goal>()
                 .Property(g => g.CreationDate)
+                .ValueGeneratedOnAdd()
+                .HasDefaultValueSql("GETDATE()");
+
+
+            modelBuilder.Entity<Rel_IssueGoal>()
+               .HasKey(rig => new { rig.Issue_ID, rig.Goal_ID });
+            modelBuilder.Entity<Rel_IssueGoal>()
+                .HasOne(rig => rig.Issue)
+                .WithMany(i => i.IssueGoals)
+                .HasForeignKey(rig => rig.Issue_ID);
+            modelBuilder.Entity<Rel_IssueGoal>()
+                .HasOne(rig => rig.Goal)
+                .WithMany(g => g.IssueGoals)
+                .HasForeignKey(rig => rig.Goal_ID);
+            modelBuilder.Entity<Rel_IssueGoal>()
+                .Property(rig => rig.CreationDate)
                 .ValueGeneratedOnAdd()
                 .HasDefaultValueSql("GETDATE()");
 
