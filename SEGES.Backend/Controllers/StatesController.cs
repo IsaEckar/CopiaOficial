@@ -62,4 +62,6 @@ namespace SEGES.Backend.Controllers
                 return NotFound(response.Message);
             }
         }
+    }
 }
+
