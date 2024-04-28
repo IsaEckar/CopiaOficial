@@ -144,5 +144,7 @@ namespace SEGES.Shared
         public DbSet<DocTraceabilityType> DocTraceabilityTypes { get; set; }
         public DbSet<HUApprovalStatus> HUApprovalStatuses { get; set; }
         public DbSet<ProjectStatus> ProjectStatuses { get; set; }
+        public DbSet<SecundaryKPI> secundaryKPIs { get; set; }
+        public DbSet<SourceDocTraceability> SourceDocTraceabilities { get; set; }
     }
 }
