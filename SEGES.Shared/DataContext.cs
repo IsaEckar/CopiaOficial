@@ -11,7 +11,7 @@ namespace SEGES.Shared
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            
+            base.OnModelCreating(modelBuilder);
 
             modelBuilder.Entity<City>()
                 .HasKey(c => c.CityId);
@@ -23,6 +23,14 @@ namespace SEGES.Shared
                 .IsUnique();
 
 
+            modelBuilder.Entity<Country>()
+                .HasKey(c => c.CountryId);
+            modelBuilder.Entity<Country>()
+                .Property(c => c.CountryId)
+                .ValueGeneratedOnAdd();
+            modelBuilder.Entity<Country>()
+                .HasIndex(x => x.Name)
+                .IsUnique();
 
         }
 
@@ -36,5 +44,6 @@ namespace SEGES.Shared
         }
 
         public DbSet<City> Cities { get; set; }
+        public DbSet<Country> Countries { get; set; }
     }
 }

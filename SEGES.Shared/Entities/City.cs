@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using SEGES.Shared.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
