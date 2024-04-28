@@ -59,6 +59,9 @@ namespace SEGES.Shared
                 .Property(g => g.CreationDate)
                 .ValueGeneratedOnAdd()
                 .HasDefaultValueSql("GETDATE()");
+
+            modelBuilder.Entity<HUApprovalStatus>()
+                .HasKey(us => us.HUApprovalStatusId);
         }
 
         private void DisableCascadingDelete(ModelBuilder modelBuilder)
@@ -73,5 +76,6 @@ namespace SEGES.Shared
         public DbSet<City> Cities { get; set; }
         public DbSet<Country> Countries { get; set; }
         public DbSet<DocTraceability> DocTraceabilities { get; set; }
+        public DbSet<HUApprovalStatus> HUApprovalStatuses { get; set; }
     }
 }

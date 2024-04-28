@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace SEGES.Shared.Entities
 {
-    internal class DocTraceability : IEntityWithName, IEntityWithCreationDate
+    public class DocTraceability : IEntityWithName, IEntityWithCreationDate
     {
         public int DocTraceabilityId { get; set; }
 
