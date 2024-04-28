@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SEGES.Shared.DTOs
 {
-    internal class DocTraceabilityTypeDTO
+    public class DocTraceabilityTypeDTO
     {
     }
 }

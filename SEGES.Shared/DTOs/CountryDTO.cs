@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SEGES.Shared.DTOs
 {
-    internal class CountryDTO
+    public class CountryDTO
     {
         public int CountryId { get; set; }
         public string Name { get; set; }

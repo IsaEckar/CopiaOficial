@@ -4,6 +4,7 @@ using SEGES.Backend.Repositories.Interfaces;
 using SEGES.Backend.UnitsOfWork.Implementations;
 using SEGES.Backend.UnitsOfWork.Interfaces;
 using SEGES.Shared;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -24,7 +25,7 @@ builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepositor
 builder.Services.AddScoped<ICountriesRepository, CountriesRepository>();
 builder.Services.AddScoped<ICountriesUnitOfWork, CountriesUnitOfWork>();
 
-builder.Services.AddScoped<IStateRepository, StatesRepository>();
+builder.Services.AddScoped<IStateRepository, StatesRepository();
 builder.Services.AddScoped<IStateUnitOfWork, StatesUnitOfWork>();
 
 builder.Services.AddScoped<ICitiesRepository, CitiesRepository>();
