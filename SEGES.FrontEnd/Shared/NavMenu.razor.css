@@ -18,6 +18,16 @@
     top: -2px;
 }
 
+.bi {
+    display: inline-block;
+    position: relative;
+    width: 2rem;
+    font-size: 1.1rem;
+    vertical-align: text-top;
+    top: -2px;
+    background-size: cover
+}
+
 .nav-item {
     font-size: 0.9rem;
     padding-bottom: 0.5rem;
