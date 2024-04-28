@@ -2,7 +2,6 @@ using CurrieTechnologies.Razor.SweetAlert2;
 using Microsoft.AspNetCore.Components;
 using SEGES.FrontEnd.Repositories;
 using System.Net;
-using Azure;
 using SEGES.Shared.Entities;
 
 
