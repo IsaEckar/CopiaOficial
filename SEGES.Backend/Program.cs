@@ -1,4 +1,8 @@
 using Microsoft.EntityFrameworkCore;
+using SEGES.Backend.Repositories.Implementations;
+using SEGES.Backend.Repositories.Interfaces;
+using SEGES.Backend.UnitsOfWork.Implementations;
+using SEGES.Backend.UnitsOfWork.Interfaces;
 using SEGES.Shared;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -13,6 +17,27 @@ builder.Services.AddDbContext<DataContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("SIEGESConnection"));
 });
+
+builder.Services.AddScoped(typeof(IGenericUnitOfWork<>), typeof(GenericUnitOfWork<>));
+builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+
+builder.Services.AddScoped<ICountriesRepository, CountriesRepository>();
+builder.Services.AddScoped<ICountriesUnitOfWork, CountriesUnitOfWork>();
+
+builder.Services.AddScoped<IStateRepository, StatesRepository>();
+builder.Services.AddScoped<IStateUnitOfWork, StatesUnitOfWork>();
+
+builder.Services.AddScoped<ICitiesRepository, CitiesRepository>();
+builder.Services.AddScoped<ICitiesUnitOfWork, CitiesUnitOfWork>();
+
+builder.Services.AddScoped<IDocTraceabilityTypesRepository, DocTraceabilityTypesRepository>();
+builder.Services.AddScoped<IDocTraceabilityTypesUnitOfWork, DocTraceabilityTypesUnitOfWork>();
+
+builder.Services.AddScoped<IHuAppruvalStatusRepository, HuAppruvalStatusRepository>();
+builder.Services.AddScoped<IHuApprovalStatusUnitOfWork, HuApprovalStatusUnitOfWork>();
+
+builder.Services.AddScoped<IHUPrioritiesRepository, HUPrioritiesRepository>();
+builder.Services.AddScoped<IHUPrioritiesUnitOfWork, HUPrioritiesUnitOfWork>();
 
 var app = builder.Build();
 
