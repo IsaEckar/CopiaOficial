@@ -6,7 +6,7 @@ using SEGES.Shared.DTOs;
 
 namespace SEGES.Backend.UnitsOfWork.Interfaces
 {
-    public class ICitiesUnitOfWork
+    public interface ICitiesUnitOfWork
     {
         Task<ActionResponse<IEnumerable<City>>> GetAsync(PaginationDTO pagination);
 
