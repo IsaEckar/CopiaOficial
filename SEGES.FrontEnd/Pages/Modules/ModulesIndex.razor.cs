@@ -1,6 +1,7 @@
 using CurrieTechnologies.Razor.SweetAlert2;
 using Microsoft.AspNetCore.Components;
 using SEGES.FrontEnd.Repositories;
+using SEGES.Shared.Entities;
 using System.Net;
 
 namespace SEGES.FrontEnd.Pages.Modules

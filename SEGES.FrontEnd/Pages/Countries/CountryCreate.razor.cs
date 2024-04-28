@@ -1,4 +1,8 @@
+using CurrieTechnologies.Razor.SweetAlert2;
 using Microsoft.AspNetCore.Components;
+using SEGES.FrontEnd.Repositories;
+using SEGES.FrontEnd.Shared;
+using SEGES.Shared.Entities;
 using System.Diagnostics.Metrics;
 
 namespace SEGES.FrontEnd.Pages.Countries

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Components;
 using SEGES.FrontEnd.Repositories;
 using System.Net;
 using Azure;
+using SEGES.Shared.Entities;
 
 
 namespace SEGES.FrontEnd.Pages.Countries

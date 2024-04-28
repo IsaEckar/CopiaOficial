@@ -1,10 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using SEGES.Backend.UnitsOfWork.Interfaces;
 using SEGES.Shared.Entities;
 
 namespace SEGES.Backend.Controllers
 {
-    public class ProjectStatusesController
-    {
+    
         [ApiController]
         [Route("api/[Controller]")]
         public class ProjectStatusesController : GenericController<ProjectStatus>
@@ -13,4 +13,5 @@ namespace SEGES.Backend.Controllers
             {
             }
         }
-    }
+    
+}
