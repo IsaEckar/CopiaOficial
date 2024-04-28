@@ -63,22 +63,7 @@ namespace SEGES.Shared
                 .WithMany()
                 .HasForeignKey(dc => dc.Source_Id);
 
-            modelBuilder.Entity<Module>()
-             .HasKey(c => c.ModuleId);
-            modelBuilder.Entity<Module>()
-                .Property(c => c.ModuleId)
-                .ValueGeneratedOnAdd();
-            modelBuilder.Entity<Module>()
-                .HasIndex(x => x.Name)
-                .IsUnique();
-            modelBuilder.Entity<Module>()
-                .HasMany(m => m.Permissions)
-                .WithOne(p => p.Module)
-                .HasForeignKey(p => p.Module_ID);
-            modelBuilder.Entity<Module>()
-                .Property(k => k.CreationDate)
-                .ValueGeneratedOnAdd()
-                .HasDefaultValueSql("GETDATE()");
+
 
             modelBuilder.Entity<Issue>()
                 .HasOne(i => i.Project)
