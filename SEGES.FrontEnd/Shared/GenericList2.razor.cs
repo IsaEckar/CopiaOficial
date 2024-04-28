@@ -2,7 +2,7 @@
 
 namespace SEGES.FrontEnd.Shared
 {
-    public class GenericList2<Titem>
+    public partial class  GenericList2<Titem>
     {
         [Parameter] public RenderFragment? Loading { get; set; }//to show while loading
         [Parameter] public RenderFragment? NoRecords { get; set; }//tpo show when no records
