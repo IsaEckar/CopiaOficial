@@ -1,61 +1,65 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SEGES.Shared.Entities;
+using SEGES.Shared.DTOs;
+using SEGES.Backend.UnitsOfWork.Interfaces;
 
 namespace SEGES.Backend.Controllers
 {
-    [ApiController]
-    [Route("api/[controller]")]
-    public class StatesController : GenericController<State>
+    public class StatesController
     {
-        private readonly IStateUnitOfWork _statesUnitOfWork;
-
-        public StatesController(IGenericUnitOfWork<State> unitOfWork, IStateUnitOfWork statesUnitOfWork) : base(unitOfWork)
+        [ApiController]
+        [Route("api/[controller]")]
+        public class StatesController : GenericController<State>
         {
-            _statesUnitOfWork = statesUnitOfWork;
-        }
+            private readonly IStateUnitOfWork _statesUnitOfWork;
 
-        [HttpGet("full")]
-        public override async Task<IActionResult> GetAsync()
-        {
-            var response = await _statesUnitOfWork.GetAsync();
-            if (response.WasSuccess)
+            public StatesController(IGenericUnitOfWork<State> unitOfWork, IStateUnitOfWork statesUnitOfWork) : base(unitOfWork)
             {
-                return Ok(response.Result);
+                _statesUnitOfWork = statesUnitOfWork;
             }
-            return BadRequest();
-        }
 
-        [HttpGet]
-        public override async Task<IActionResult> GetAsync([FromQuery] PaginationDTO pagination)
-        {
-            var response = await _statesUnitOfWork.GetAsync(pagination);
-            if (response.WasSuccess)
+            [HttpGet("full")]
+            public override async Task<IActionResult> GetAsync()
             {
-                return Ok(response.Result);
+                var response = await _statesUnitOfWork.GetAsync();
+                if (response.WasSuccess)
+                {
+                    return Ok(response.Result);
+                }
+                return BadRequest();
             }
-            return BadRequest();
-        }
 
-        [HttpGet("totalPages")]
-        public override async Task<IActionResult> GetPagesAsync([FromQuery] PaginationDTO pagination)
-        {
-            var action = await _statesUnitOfWork.GetTotalPagesAsync(pagination);
-            if (action.WasSuccess)
+            [HttpGet]
+            public override async Task<IActionResult> GetAsync([FromQuery] PaginationDTO pagination)
             {
-                return Ok(action.Result);
+                var response = await _statesUnitOfWork.GetAsync(pagination);
+                if (response.WasSuccess)
+                {
+                    return Ok(response.Result);
+                }
+                return BadRequest();
             }
-            return BadRequest();
-        }
 
-        [HttpGet("{id}")]
-        public override async Task<IActionResult> GetAsync(int id)
-        {
-            var response = await _statesUnitOfWork.GetAsync(id);
-            if (response.WasSuccess)
+            [HttpGet("totalPages")]
+            public override async Task<IActionResult> GetPagesAsync([FromQuery] PaginationDTO pagination)
             {
-                return Ok(response.Result);
+                var action = await _statesUnitOfWork.GetTotalPagesAsync(pagination);
+                if (action.WasSuccess)
+                {
+                    return Ok(action.Result);
+                }
+                return BadRequest();
             }
-            return NotFound(response.Message);
+
+            [HttpGet("{id}")]
+            public override async Task<IActionResult> GetAsync(int id)
+            {
+                var response = await _statesUnitOfWork.GetAsync(id);
+                if (response.WasSuccess)
+                {
+                    return Ok(response.Result);
+                }
+                return NotFound(response.Message);
+            }
         }
-    }
 }
