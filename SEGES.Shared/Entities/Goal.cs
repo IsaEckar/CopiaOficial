@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace SEGES.Shared.Entities
 {
-    internal class Goal : IEntityWithCreationDate
+    public class Goal : IEntityWithCreationDate
     {
         public int GoalId { get; set; }
 
