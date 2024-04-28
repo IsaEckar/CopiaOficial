@@ -99,6 +99,7 @@ namespace SEGES.Shared
                 .ValueGeneratedOnAdd()
                 .HasDefaultValueSql("GETDATE()");
 
+
             modelBuilder.Entity<Rel_IssueGoal>()
                .HasKey(rig => new { rig.Issue_ID, rig.Goal_ID });
             modelBuilder.Entity<Rel_IssueGoal>()
@@ -113,17 +114,6 @@ namespace SEGES.Shared
                 .Property(rig => rig.CreationDate)
                 .ValueGeneratedOnAdd()
                 .HasDefaultValueSql("GETDATE()");
-
-            modelBuilder.Entity<KPI>()
-                 .HasKey(k => k.KPI_ID);
-            modelBuilder.Entity<KPI>()
-                .Property(k => k.CreationDate)
-                .ValueGeneratedOnAdd()
-                .HasDefaultValueSql("GETDATE()");
-            modelBuilder.Entity<KPI>()
-                .HasOne(k => k.Goal)
-                .WithMany(g => g.KPIs)
-                .HasForeignKey(k => k.Goal_Id);
 
             modelBuilder.Entity<HUApprovalStatus>()
                 .HasKey(us => us.HUApprovalStatusId);
@@ -148,8 +138,5 @@ namespace SEGES.Shared
         public DbSet<City> Cities { get; set; }
         public DbSet<Country> Countries { get; set; }
         public DbSet<DocTraceability> DocTraceabilities { get; set; }
-        public DbSet<HUApprovalStatus> HUApprovalStatuses { get; set; }
-        public DbSet<HUPriority> HUPriorities { get; set; }
-        public DbSet<DocTraceabilityType> DocTraceabilityTypes { get; set; }
     }
 }
