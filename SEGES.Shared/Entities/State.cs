@@ -1,0 +1,31 @@
+﻿using SEGES.Shared.Interfaces;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.Metrics;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace SEGES.Shared.Entities
+{
+    public class State :IEntityWithName
+    {
+        public int StateId { get; set; }
+
+        [Display(Name = "Departamento / Estado")]
+        [MaxLength(200, ErrorMessage = "El campo {0} no puede tener más de {1} caracteres.")]
+        [Required(ErrorMessage = "El campo {0} es requerido.")]
+        public string Name { get; set; } = null!;
+
+        public int CountryId { get; set; }
+        public Country? Country { get; set; }
+
+        public ICollection<City>? Cities { get; set; }
+
+
+        [Display(Name = "Ciudades")]
+        public int CitiesNumber => Cities == null || Cities.Count == 0 ? 0 : Cities.Count;
+
+    }
+}

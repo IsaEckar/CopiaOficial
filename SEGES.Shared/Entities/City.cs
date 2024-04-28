@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace SEGES.Shared.Entities
 {
-    internal class City : IEntityWithName
+    public class City : IEntityWithName
     {
         public int CityId { get; set; }
 
