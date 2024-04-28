@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Components;
 namespace SEGES.FrontEnd.Shared
 {
     public partial class Pagination
