@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SEGES.Shared.DTOs
 {
-    internal class PaginationDTO
+    public class PaginationDTO
     {
         public int Id { get; set; }
         public int Page { get; set; } = 1;
