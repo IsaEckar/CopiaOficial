@@ -159,4 +159,3 @@ namespace SEGES.Shared
         public DbSet<ProjectStatus> ProjectStatuses { get; set; }
     }
 }
-}
