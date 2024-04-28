@@ -1,0 +1,41 @@
+﻿@page "/DocTraceabilityType"
+
+<h3>Tipo de Trazabilidad Documental</h3>
+
+<div class="mb-3">
+    <a class="btn btn-primary" href="/doctraceabiltyTypes/create">Nuevo Tipo</a>
+</div>
+
+<GenericList2 MyList="DocTraceabilityTypes">
+    <Loading>
+        <div class="d-flex justify-content-center align-itmes-center">
+            <img src="https://i.gifer.com/ZKZg.gif" alt="Cargando..." />
+        </div>
+    </Loading>
+    <Body>
+        <Pagination CurrentPage="currentPage"
+                    TotalPages="totalPages"
+                    SelectedPage="SelectedPageAsync" />
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Tipo</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var type in DocTraceabilityTypes!)
+                {
+                    <tr>
+
+                        <td>@type.Name</td>
+                        <td>
+                            <a class="btn btn-info btn-sm" href="/doctraceabilitytype/edit/@type.DocTraceabilityTypeId">Editar</a>
+                            <button class="btn btn-danger btn-sm" @onclick=@(() => DeleteAsync(type))>Borrar</button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </Body>
+</GenericList2>
