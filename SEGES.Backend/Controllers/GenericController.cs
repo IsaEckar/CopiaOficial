@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
+
 namespace SEGES.Backend.Controllers
 {
     public class GenericController<T> : Controller where T : class
