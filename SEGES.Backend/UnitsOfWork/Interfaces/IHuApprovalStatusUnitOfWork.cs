@@ -8,5 +8,9 @@ namespace SEGES.Backend.UnitsOfWork.Interfaces
     {
         Task<ActionResponse<HUApprovalStatus>> GetAsync(int id);
         Task<ActionResponse<IEnumerable<HUApprovalStatus>>> GetAsync();
+        Task<ActionResponse<IEnumerable<HUApprovalStatus>>> GetAsync(PaginationDTO pagination);
+
+        Task<ActionResponse<int>> GetTotalPagesAsync(PaginationDTO pagination);
+
     }
 }

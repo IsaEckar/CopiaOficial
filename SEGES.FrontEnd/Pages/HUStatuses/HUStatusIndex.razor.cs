@@ -13,12 +13,41 @@ namespace SEGES.FrontEnd.Pages.HUStatuses
         [Inject] private IRepository Repository { get; set; } = null!;
         [Inject] private SweetAlertService SweetAlertService { get; set; } = null!;
         [Inject] private NavigationManager NavigationManager { get; set; } = null!;
+        [Parameter, SupplyParameterFromQuery] public string Filter { get; set; } = string.Empty;
+        [Parameter, SupplyParameterFromQuery] public int RecordsNumber { get; set; } = 10;
         [Parameter, SupplyParameterFromQuery] public string Page { get; set; } = string.Empty;
 
         public List<HUStatus>? HUStatuses { get; set; }
         protected override async Task OnInitializedAsync()
         {
             await LoadAsync();
+        }
+        private async Task SelectedRecordsNumberAsync(int recordsnumber)
+        {
+            RecordsNumber = recordsnumber;
+            int page = 1;
+            await LoadAsync(page);
+            await SelectedPageAsync(page);
+        }
+        private async Task FilterCallBack(string filter)
+        {
+            Filter = filter;
+            await ApplyFilterAsync();
+            StateHasChanged();
+
+        }
+        private void ValidateRecordsNumber()
+        {
+            if (RecordsNumber == 0)
+            {
+                RecordsNumber = 10;
+            }
+        }
+        private async Task ApplyFilterAsync()
+        {
+            int page = 1;
+            await LoadAsync(page);
+            await SelectedPageAsync(page);
         }
 
         private async Task SelectedPageAsync(int page)
@@ -43,8 +72,12 @@ namespace SEGES.FrontEnd.Pages.HUStatuses
 
         private async Task<bool> LoadListAsync(int page)
         {
-            var url = $"api/hustatus?page={page}";
-
+            ValidateRecordsNumber();
+            var url = $"api/hustatus?page={page}&recordsnumber={RecordsNumber}";
+            if (!string.IsNullOrEmpty(Filter))
+            {
+                url += $"&filter={Filter}";
+            }
 
             var responseHttp = await Repository.GetAsync<List<HUStatus>>(url);
             if (responseHttp.Error)
@@ -57,11 +90,15 @@ namespace SEGES.FrontEnd.Pages.HUStatuses
             return true;
         }
 
+
         private async Task LoadPagesAsync()
         {
-            var url = "api/hustatus/totalPages";
-
-
+            ValidateRecordsNumber();
+            var url = $"api/hustatus/totalPages?recordsnumber={RecordsNumber}";
+            if (!string.IsNullOrEmpty(Filter))
+            {
+                url += $"&filter={Filter}";
+            }
             var responseHttp = await Repository.GetAsync<int>(url);
             if (responseHttp.Error)
             {
@@ -71,7 +108,7 @@ namespace SEGES.FrontEnd.Pages.HUStatuses
             }
             totalPages = responseHttp.Response;
         }
-
+       
         public async Task DeleteAsync(HUStatus hUStatus)
         {
             var result = await SweetAlertService.FireAsync(new SweetAlertOptions

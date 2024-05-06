@@ -1,6 +1,7 @@
 using CurrieTechnologies.Razor.SweetAlert2;
 using Microsoft.AspNetCore.Components;
 using SEGES.FrontEnd.Repositories;
+using SEGES.FrontEnd.Shared;
 using SEGES.Shared.Entities;
 using System.Net;
 
@@ -16,6 +17,8 @@ namespace SEGES.FrontEnd.Pages.DocTraceabilityTypes
 
         [Inject] private SweetAlertService SweetAlertService { get; set; } = null!;
         [Inject] private NavigationManager NavigationManager { get; set; } = null!;
+        [Parameter, SupplyParameterFromQuery] public string Filter { get; set; } = string.Empty;
+        [Parameter, SupplyParameterFromQuery] public int RecordsNumber { get; set; } = 10;
         [Parameter, SupplyParameterFromQuery] public string Page { get; set; } = string.Empty;
 
         public List<DocTraceabilityType>? DocTraceabilityTypes { get; set; }
@@ -24,20 +27,38 @@ namespace SEGES.FrontEnd.Pages.DocTraceabilityTypes
         {
             await LoadAsync();
         }
-
-        private async Task SelectedPageAsync(int page)
+        private async Task SelectedRecordsNumberAsync(int recordsnumber)
         {
-            currentPage = page;
+            RecordsNumber = recordsnumber;
+            int page = 1;
             await LoadAsync(page);
+            await SelectedPageAsync(page);
         }
-
-        private async Task LoadAsync(int page = 1)
+        private async Task FilterCallBack(string filter)
+        {
+            Filter = filter;
+            await ApplyFilterAsync();
+            StateHasChanged();
+        }
+        private async Task SelectedPageAsync(int page)
         {
             if (!string.IsNullOrWhiteSpace(Page))
             {
                 page = Convert.ToInt32(Page);
             }
 
+            currentPage = page;
+            await LoadAsync(page);
+        }
+        private void ValidateRecordsNumber()
+        {
+            if (RecordsNumber == 0)
+            {
+                RecordsNumber = 10;
+            }
+        }
+        private async Task LoadAsync(int page = 1)
+        {
             var ok = await LoadListAsync(page);
             if (ok)
             {
@@ -45,10 +66,15 @@ namespace SEGES.FrontEnd.Pages.DocTraceabilityTypes
             }
         }
 
+
         private async Task<bool> LoadListAsync(int page)
         {
-            var url = $"api/doctraceabilitytype?page={page}";
-
+            ValidateRecordsNumber();
+            var url = $"api/doctraceabilitytype?page={page}&recordsnumber={RecordsNumber}";
+            if (!string.IsNullOrEmpty(Filter))
+            {
+                url += $"&filter={Filter}";
+            }
 
             var responseHttp = await Repository.GetAsync<List<DocTraceabilityType>>(url);
             if (responseHttp.Error)
@@ -63,7 +89,12 @@ namespace SEGES.FrontEnd.Pages.DocTraceabilityTypes
 
         private async Task LoadPagesAsync()
         {
-            var url = "api/doctraceabilitytype/totalPages";
+            ValidateRecordsNumber();
+            var url = $"api/doctraceabilitytype/totalPages?recordsnumber={RecordsNumber}";
+                if (!string.IsNullOrEmpty(Filter))
+            {
+                url += $"&filter={Filter}";
+            }
 
 
             var responseHttp = await Repository.GetAsync<int>(url);
@@ -75,6 +106,15 @@ namespace SEGES.FrontEnd.Pages.DocTraceabilityTypes
             }
             totalPages = responseHttp.Response;
         }
+
+
+        private async Task ApplyFilterAsync()
+        {
+            int page = 1;
+            await LoadAsync(page);
+            await SelectedPageAsync(page);
+        }
+
         public async Task DeleteAsync(DocTraceabilityType type)
         {
             var result = await SweetAlertService.FireAsync(new SweetAlertOptions

@@ -13,12 +13,42 @@ namespace SEGES.FrontEnd.Pages.ProjectStatuses
         [Inject] private IRepository Repository { get; set; } = null!;
         [Inject] private SweetAlertService SweetAlertService { get; set; } = null!;
         [Inject] private NavigationManager NavigationManager { get; set; } = null!;
+        [Parameter, SupplyParameterFromQuery] public string Filter { get; set; } = string.Empty;
+        [Parameter, SupplyParameterFromQuery] public int RecordsNumber { get; set; } = 10;
         [Parameter, SupplyParameterFromQuery] public string Page { get; set; } = string.Empty;
         public List<ProjectStatus>? ProjectStatuses { get; set; }
        protected override async Task OnInitializedAsync()
         {
             await LoadAsync();
         }
+        private async Task SelectedRecordsNumberAsync(int recordsnumber)
+        {
+            RecordsNumber = recordsnumber;
+            int page = 1;
+            await LoadAsync(page);
+            await SelectedPageAsync(page);
+        }
+        private async Task FilterCallBack(string filter)
+        {
+            Filter = filter;
+            await ApplyFilterAsync();
+            StateHasChanged();
+
+        }
+        private void ValidateRecordsNumber()
+        {
+            if (RecordsNumber == 0)
+            {
+                RecordsNumber = 10;
+            }
+        }
+        private async Task ApplyFilterAsync()
+        {
+            int page = 1;
+            await LoadAsync(page);
+            await SelectedPageAsync(page);
+        }
+
 
         private async Task SelectedPageAsync(int page)
         {
@@ -42,9 +72,12 @@ namespace SEGES.FrontEnd.Pages.ProjectStatuses
 
         private async Task<bool> LoadListAsync(int page)
         {
-            var url = $"api/projectstatuses?page={page}";
-
-
+            ValidateRecordsNumber();
+            var url = $"api/projectstatuses?page={page}&recordsnumber={RecordsNumber}";
+            if (!string.IsNullOrEmpty(Filter))
+            {
+                url += $"&filter={Filter}";
+            }
             var responseHttp = await Repository.GetAsync<List<ProjectStatus>>(url);
             if (responseHttp.Error)
             {
@@ -58,9 +91,12 @@ namespace SEGES.FrontEnd.Pages.ProjectStatuses
 
         private async Task LoadPagesAsync()
         {
-            var url = "api/projectstatuses/totalPages";
-
-
+            ValidateRecordsNumber();
+            var url = $"api/projectstatuses/totalPages?recordsnumber={RecordsNumber}";
+            if (!string.IsNullOrEmpty(Filter))
+            {
+                url += $"&filter={Filter}";
+            }
             var responseHttp = await Repository.GetAsync<int>(url);
             if (responseHttp.Error)
             {

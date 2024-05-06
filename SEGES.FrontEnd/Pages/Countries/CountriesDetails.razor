@@ -15,12 +15,13 @@ else
             </span>
         </div>
         <div class="card-body">
+            <Filter PlaceHolder="Buscar p." Callback=@FilterCallBack />
             <GenericList2 MyList="states!">
                 <Body>
-
                     <Pagination CurrentPage="currentPage"
                                 TotalPages="totalPages"
-                                SelectedPage="SelectedPageAsync" />
+                                SelectedPage="SelectedPageAsync"
+                                RecordsNumber="SelectedRecordsNumberAsync" />
 
 
                     <table class="table table-striped">

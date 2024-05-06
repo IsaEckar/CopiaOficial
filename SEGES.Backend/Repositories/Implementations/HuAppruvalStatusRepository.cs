@@ -4,6 +4,8 @@ using SEGES.Backend.UnitsOfWork.Implementations;
 using SEGES.Shared.Entities;
 using SEGES.Shared.Responses;
 using SEGES.Shared;
+using SEGES.Backend.Helpers;
+using SEGES.Shared.DTOs;
 
 namespace SEGES.Backend.Repositories.Implementations
 {
@@ -16,32 +18,57 @@ namespace SEGES.Backend.Repositories.Implementations
                 _context = context;
             }
 
-            public override async Task<ActionResponse<HUApprovalStatus>> GetAsync(int id)
+        public override async Task<ActionResponse<IEnumerable<HUApprovalStatus>>> GetAsync()
+        {
+            var huApprovalStatuses = await _context.HUApprovalStatuses
+                .OrderBy(x => x.Name)
+                .ToListAsync();
+            return new ActionResponse<IEnumerable<HUApprovalStatus>>
             {
-                var status = await _context.HUApprovalStatuses.FindAsync(id);
-                if (status == null)
-                {
-                    return new ActionResponse<HUApprovalStatus>
-                    {
-                        WasSuccess = false,
-                        Message = "Estado no existe"
-                    };
-                }
-                return new ActionResponse<HUApprovalStatus>
-                {
-                    WasSuccess = true,
-                    Result = status
-                };
+                WasSuccess = true,
+                Result = huApprovalStatuses
+            };
+        }
+
+        public override async Task<ActionResponse<IEnumerable<HUApprovalStatus>>> GetAsync(PaginationDTO pagination)
+        {
+            var queryable = _context.HUApprovalStatuses.AsQueryable();
+
+            if (!string.IsNullOrWhiteSpace(pagination.Filter))
+            {
+                queryable = queryable.Where(x => x.Name.ToLower().Contains(pagination.Filter.ToLower()));
             }
 
-            public override async Task<ActionResponse<IEnumerable<HUApprovalStatus>>> GetAsync()
+            return new ActionResponse<IEnumerable<HUApprovalStatus>>
             {
-                var statuses = await _context.HUApprovalStatuses.ToListAsync();
-                return new ActionResponse<IEnumerable<HUApprovalStatus>>
-                {
-                    WasSuccess = true,
-                    Result = statuses
-                };
+                WasSuccess = true,
+                Result = await queryable.OrderBy(x => x.Name).Paginate(pagination).ToListAsync()
+            };
+        }
+
+        public override async Task<ActionResponse<int>> GetTotalPagesAsync(PaginationDTO pagination)
+        {
+            var queryable = _context.HUApprovalStatuses.AsQueryable();
+
+            if (!string.IsNullOrWhiteSpace(pagination.Filter))
+            {
+                queryable = queryable.Where(x => x.Name.ToLower().Contains(pagination.Filter.ToLower()));
             }
+
+            double count = await queryable.CountAsync();
+            int totalPages = (int)Math.Ceiling(count / pagination.RecordsNumber);
+            return new ActionResponse<int>
+            {
+                WasSuccess = true,
+                Result = totalPages
+            };
+        }
+
+        public async Task<IEnumerable<HUApprovalStatus>> GetComboAsync()
+        {
+            return await _context.HUApprovalStatuses
+                .OrderBy(c => c.Name)
+                .ToListAsync();
         }
     }
+}

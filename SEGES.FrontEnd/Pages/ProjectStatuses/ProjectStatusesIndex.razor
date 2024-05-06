@@ -4,7 +4,7 @@
 <div class="mb-3">
     <a class="btn btn-primary" href="/ProjectStatuses/create">Nuevo Estado</a>
 </div>
-
+<Filter PlaceHolder="Buscar..." Callback=@FilterCallBack />
 <GenericList2 MyList="ProjectStatuses">
     <Loading>
         <div class="d-flex justify-content-center align-itmes-center">
@@ -14,7 +14,8 @@
     <Body>
         <Pagination CurrentPage="currentPage"
                     TotalPages="totalPages"
-                    SelectedPage="SelectedPageAsync" />
+                    SelectedPage="SelectedPageAsync"
+                    RecordsNumber="SelectedRecordsNumberAsync" />
         <table class="table table-striped">
             <thead>
                 <tr>

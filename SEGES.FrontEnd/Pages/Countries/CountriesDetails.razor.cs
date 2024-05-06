@@ -13,17 +13,31 @@ namespace SEGES.FrontEnd.Pages.Countries
         private int currentPage = 1;
         private int totalPages;
 
+        [Inject] private IRepository Repository { get; set; } = null!;
         [Inject] private NavigationManager NavigationManager { get; set; } = null!;
         [Inject] private SweetAlertService SweetAlertService { get; set; } = null!;
-        [Inject] private IRepository Repository { get; set; } = null!;
-
         [Parameter] public int CountryId { get; set; }
         [Parameter, SupplyParameterFromQuery] public string Page { get; set; } = string.Empty;
         [Parameter, SupplyParameterFromQuery] public string Filter { get; set; } = string.Empty;
-
+        [Parameter, SupplyParameterFromQuery] public int RecordsNumber { get; set; } = 10;
         protected override async Task OnInitializedAsync()
         {
             await LoadAsync();
+        }
+
+        private async Task SelectedRecordsNumberAsync(int recordsnumber)
+        {
+            RecordsNumber = recordsnumber;
+            int page = 1;
+            await LoadAsync(page);
+            await SelectedPageAsync(page);
+        }
+
+        private async Task FilterCallBack(string filter)
+        {
+            Filter = filter;
+            await ApplyFilterAsync();
+            StateHasChanged();
         }
 
         private async Task SelectedPageAsync(int page)
@@ -50,9 +64,18 @@ namespace SEGES.FrontEnd.Pages.Countries
             }
         }
 
+        private void ValidateRecordsNumber()
+        {
+            if (RecordsNumber == 0)
+            {
+                RecordsNumber = 10;
+            }
+        }
+
         private async Task LoadPagesAsync()
         {
-            var url = $"api/states/totalPages?id={CountryId}";
+            ValidateRecordsNumber();
+            var url = $"api/states/totalPages?id={CountryId}&recordsnumber={RecordsNumber}";
             if (!string.IsNullOrEmpty(Filter))
             {
                 url += $"&filter={Filter}";
@@ -70,7 +93,9 @@ namespace SEGES.FrontEnd.Pages.Countries
 
         private async Task<bool> LoadStatesAsync(int page)
         {
-            var url = $"api/states?id={CountryId}&page={page}";
+            ValidateRecordsNumber();
+            var url = $"api/states?id={CountryId}&page={page}&recordsnumber={RecordsNumber}";
+
             if (!string.IsNullOrEmpty(Filter))
             {
                 url += $"&filter={Filter}";
@@ -85,12 +110,6 @@ namespace SEGES.FrontEnd.Pages.Countries
             }
             states = responseHttp.Response;
             return true;
-        }
-
-        private async Task CleanFilterAsync()
-        {
-            Filter = string.Empty;
-            await ApplyFilterAsync();
         }
 
         private async Task ApplyFilterAsync()

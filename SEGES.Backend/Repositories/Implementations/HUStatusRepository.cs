@@ -1,45 +1,48 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using SEGES.Backend.Helpers;
 using SEGES.Backend.Repositories.Interfaces;
-using SEGES.Backend.UnitsOfWork.Implementations;
+using SEGES.Shared;
+using SEGES.Shared.DTOs;
 using SEGES.Shared.Entities;
 using SEGES.Shared.Responses;
-using SEGES.Shared;
-using static SEGES.Backend.Repositories.Implementations.DocTraceabilityTypesRepository;
-using SEGES.Backend.Helpers;
-using SEGES.Shared.DTOs;
 
 namespace SEGES.Backend.Repositories.Implementations
 {
-    
-        public class DocTraceabilityTypesRepository : GenericRepository<DocTraceabilityType>, IDocTraceabilityTypesRepository
+    public class HUStatusRepository : GenericRepository<HUStatus>, IHUStatusRepository
+    {
+        private readonly DataContext _context;
+        public HUStatusRepository(DataContext context) : base(context)
         {
-            private readonly DataContext _context;
-            public DocTraceabilityTypesRepository(DataContext context) : base(context)
-            {
-                _context = context;
-            }
-
-        public override async Task<ActionResponse<IEnumerable<DocTraceabilityType>>> GetAsync()
+            _context = context;
+        }
+        public override async Task<ActionResponse<IEnumerable<HUStatus>>> GetAsync()
         {
-            var docTraceabilityTypes = await _context.DocTraceabilityTypes
+            var huStatus = await _context.HUStatuses
                 .OrderBy(x => x.Name)
                 .ToListAsync();
-            return new ActionResponse<IEnumerable<DocTraceabilityType>>
+            return new ActionResponse<IEnumerable<HUStatus>>
             {
                 WasSuccess = true,
-                Result = docTraceabilityTypes
+                Result = huStatus
             };
         }
-        public override async Task<ActionResponse<IEnumerable<DocTraceabilityType>>> GetAsync(PaginationDTO pagination)
+        public async Task<IEnumerable<HUStatus>> GetComboAsync()
         {
-            var queryable = _context.DocTraceabilityTypes.AsQueryable();
+            return await _context.HUStatuses
+                .OrderBy(c => c.Name)
+                .ToListAsync();
+        }
+
+        public override async Task<ActionResponse<IEnumerable<HUStatus>>> GetAsync(PaginationDTO pagination)
+        {
+            var queryable = _context.HUStatuses.AsQueryable();
 
             if (!string.IsNullOrWhiteSpace(pagination.Filter))
             {
                 queryable = queryable.Where(x => x.Name.ToLower().Contains(pagination.Filter.ToLower()));
             }
 
-            return new ActionResponse<IEnumerable<DocTraceabilityType>>
+            return new ActionResponse<IEnumerable<HUStatus>>
             {
                 WasSuccess = true,
                 Result = await queryable.OrderBy(x => x.Name).Paginate(pagination).ToListAsync()
@@ -48,7 +51,7 @@ namespace SEGES.Backend.Repositories.Implementations
 
         public override async Task<ActionResponse<int>> GetTotalPagesAsync(PaginationDTO pagination)
         {
-            var queryable = _context.DocTraceabilityTypes.AsQueryable();
+            var queryable = _context.HUStatuses.AsQueryable();
 
 
             if (!string.IsNullOrWhiteSpace(pagination.Filter))
@@ -65,23 +68,24 @@ namespace SEGES.Backend.Repositories.Implementations
             };
         }
 
-        public override async Task<ActionResponse<DocTraceabilityType>> GetAsync(int id)
+        public override async Task<ActionResponse<HUStatus>> GetAsync(int id)
         {
-            var type = await _context.DocTraceabilityTypes.FindAsync(id);
+            var type = await _context.HUStatuses.FindAsync(id);
             if (type == null)
             {
-                return new ActionResponse<DocTraceabilityType>
+                return new ActionResponse<HUStatus>
                 {
                     WasSuccess = false,
                     Message = "Tipo no existe"
                 };
             }
-            return new ActionResponse<DocTraceabilityType>
+            return new ActionResponse<HUStatus>
             {
                 WasSuccess = true,
                 Result = type
             };
         }
 
+      
     }
 }

@@ -1,45 +1,42 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using SEGES.Backend.Helpers;
 using SEGES.Backend.Repositories.Interfaces;
-using SEGES.Backend.UnitsOfWork.Implementations;
+using SEGES.Shared;
+using SEGES.Shared.DTOs;
 using SEGES.Shared.Entities;
 using SEGES.Shared.Responses;
-using SEGES.Shared;
-using static SEGES.Backend.Repositories.Implementations.DocTraceabilityTypesRepository;
-using SEGES.Backend.Helpers;
-using SEGES.Shared.DTOs;
 
 namespace SEGES.Backend.Repositories.Implementations
 {
-    
-        public class DocTraceabilityTypesRepository : GenericRepository<DocTraceabilityType>, IDocTraceabilityTypesRepository
+    public class ProjectStatusesRepository : GenericRepository<ProjectStatus>, IProjectStatusesRepository
+    {
+        private readonly DataContext _context;
+        public ProjectStatusesRepository(DataContext context) : base(context)
         {
-            private readonly DataContext _context;
-            public DocTraceabilityTypesRepository(DataContext context) : base(context)
-            {
-                _context = context;
-            }
+            _context = context;
+        }
 
-        public override async Task<ActionResponse<IEnumerable<DocTraceabilityType>>> GetAsync()
+        public override async Task<ActionResponse<IEnumerable<ProjectStatus>>> GetAsync()
         {
-            var docTraceabilityTypes = await _context.DocTraceabilityTypes
+            var projectStatuses = await _context.ProjectStatuses
                 .OrderBy(x => x.Name)
                 .ToListAsync();
-            return new ActionResponse<IEnumerable<DocTraceabilityType>>
+            return new ActionResponse<IEnumerable<ProjectStatus>>
             {
                 WasSuccess = true,
-                Result = docTraceabilityTypes
+                Result = projectStatuses
             };
         }
-        public override async Task<ActionResponse<IEnumerable<DocTraceabilityType>>> GetAsync(PaginationDTO pagination)
+        public override async Task<ActionResponse<IEnumerable<ProjectStatus>>> GetAsync(PaginationDTO pagination)
         {
-            var queryable = _context.DocTraceabilityTypes.AsQueryable();
+            var queryable = _context.ProjectStatuses.AsQueryable();
 
             if (!string.IsNullOrWhiteSpace(pagination.Filter))
             {
                 queryable = queryable.Where(x => x.Name.ToLower().Contains(pagination.Filter.ToLower()));
             }
 
-            return new ActionResponse<IEnumerable<DocTraceabilityType>>
+            return new ActionResponse<IEnumerable<ProjectStatus>>
             {
                 WasSuccess = true,
                 Result = await queryable.OrderBy(x => x.Name).Paginate(pagination).ToListAsync()
@@ -48,7 +45,7 @@ namespace SEGES.Backend.Repositories.Implementations
 
         public override async Task<ActionResponse<int>> GetTotalPagesAsync(PaginationDTO pagination)
         {
-            var queryable = _context.DocTraceabilityTypes.AsQueryable();
+            var queryable = _context.ProjectStatuses.AsQueryable();
 
 
             if (!string.IsNullOrWhiteSpace(pagination.Filter))
@@ -65,18 +62,18 @@ namespace SEGES.Backend.Repositories.Implementations
             };
         }
 
-        public override async Task<ActionResponse<DocTraceabilityType>> GetAsync(int id)
+        public override async Task<ActionResponse<ProjectStatus>> GetAsync(int id)
         {
-            var type = await _context.DocTraceabilityTypes.FindAsync(id);
+            var type = await _context.ProjectStatuses.FindAsync(id);
             if (type == null)
             {
-                return new ActionResponse<DocTraceabilityType>
+                return new ActionResponse<ProjectStatus>
                 {
                     WasSuccess = false,
                     Message = "Tipo no existe"
                 };
             }
-            return new ActionResponse<DocTraceabilityType>
+            return new ActionResponse<ProjectStatus>
             {
                 WasSuccess = true,
                 Result = type

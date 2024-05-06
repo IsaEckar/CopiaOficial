@@ -1,6 +1,7 @@
 using CurrieTechnologies.Razor.SweetAlert2;
 using Microsoft.AspNetCore.Components;
 using SEGES.FrontEnd.Repositories;
+using SEGES.FrontEnd.Shared;
 using SEGES.Shared.Entities;
 using System.Net;
 
@@ -15,16 +16,28 @@ namespace SEGES.FrontEnd.Pages.Cities
         [Inject] private IRepository Repository { get; set; } = null!;
         [Inject] private SweetAlertService SweetAlertService { get; set; } = null!;
         [Inject] private NavigationManager NavigationManager { get; set; } = null!;
-
+        [Parameter, SupplyParameterFromQuery] public string Filter { get; set; } = string.Empty;
         [Parameter, SupplyParameterFromQuery] public string Page { get; set; } = string.Empty;
-
+        [Parameter, SupplyParameterFromQuery] public int RecordsNumber { get; set; } = 10;
         public List<City>? Cities { get; set; }
 
         protected async override Task OnInitializedAsync()
         {
             await LoadAsync();
         }
-
+        private async Task SelectedRecordsNumberAsync(int recordsnumber)
+        {
+            RecordsNumber = recordsnumber;
+            int page = 1;
+            await LoadAsync(page);
+            await SelectedPageAsync(page);
+        }
+        private async Task FilterCallBack(string filter)
+        {
+            Filter = filter;
+            await ApplyFilterAsync();
+            StateHasChanged();
+        }
         private async Task SelectedPageAsync(int page)
         {
             currentPage = page;
@@ -45,9 +58,15 @@ namespace SEGES.FrontEnd.Pages.Cities
             }
         }
 
+       
         private async Task<bool> LoadListAsync(int page)
         {
-            var url = $"api/cities?page={page}";
+            ValidateRecordsNumber();
+            var url = $"api/cities?page={page}&recordsnumber={RecordsNumber}";
+            if (!string.IsNullOrEmpty(Filter))
+            {
+                url += $"&filter={Filter}";
+            }
             var responseHttp = await Repository.GetAsync<List<City>>(url);
             if (responseHttp.Error)
             {
@@ -59,9 +78,24 @@ namespace SEGES.FrontEnd.Pages.Cities
             return true;
         }
 
+
+        private void ValidateRecordsNumber()
+        {
+            if (RecordsNumber == 0)
+            {
+                RecordsNumber = 10;
+            }
+        }
+
         private async Task LoadPagesAsync()
         {
-            var url = "api/cities/totalPages";
+
+            ValidateRecordsNumber();
+            var url = $"api/cities/totalPages?recordsnumber={RecordsNumber}";
+            if (!string.IsNullOrEmpty(Filter))
+            {
+                url += $"&filter={Filter}";
+            }
             var responseHttp = await Repository.GetAsync<int>(url);
             if (responseHttp.Error)
             {
@@ -70,6 +104,14 @@ namespace SEGES.FrontEnd.Pages.Cities
                 return;
             }
             totalPages = responseHttp.Response;
+        }
+
+
+        private async Task ApplyFilterAsync()
+        {
+            int page = 1;
+            await LoadAsync(page);
+            await SelectedPageAsync(page);
         }
 
         public async Task DeleteAsycn(City city)

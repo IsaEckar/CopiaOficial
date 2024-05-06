@@ -10,6 +10,7 @@ using SEGES.Backend.UnitsOfWork.Interfaces;
 using SEGES.Backend.Repositories.Interfaces;
 using SEGES.Backend.UnitsOfWork.Implementations;
 using SEGES.Backend.Repositories.Implementations;
+using Microsoft.AspNetCore.Authorization;
 
 namespace SEGES.Backend.Controllers
 {
@@ -22,6 +23,12 @@ namespace SEGES.Backend.Controllers
         public CitiesController(IGenericUnitOfWork<City> unitOfWork, ICitiesUnitOfWork citiesUnitOfWork) : base(unitOfWork)
         {
             _citiesUnitOfWork = citiesUnitOfWork;
+        }
+        [AllowAnonymous]
+        [HttpGet("combo/{stateId:int}")]
+        public async Task<IActionResult> GetComboAsync(int stateId)
+        {
+            return Ok(await _citiesUnitOfWork.GetComboAsync(stateId));
         }
 
         [HttpGet]

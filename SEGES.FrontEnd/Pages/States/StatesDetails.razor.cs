@@ -13,19 +13,33 @@ namespace SEGES.FrontEnd.Pages.States
         private int currentPage = 1;
         private int totalPages;
 
+        [Inject] private IRepository Repository { get; set; } = null!;
         [Inject] private NavigationManager NavigationManager { get; set; } = null!;
         [Inject] private SweetAlertService SweetAlertService { get; set; } = null!;
-        [Inject] private IRepository Repository { get; set; } = null!;
-
         [Parameter] public int StateId { get; set; }
         [Parameter, SupplyParameterFromQuery] public string Page { get; set; } = string.Empty;
         [Parameter, SupplyParameterFromQuery] public string Filter { get; set; } = string.Empty;
+        [Parameter, SupplyParameterFromQuery] public int RecordsNumber { get; set; } = 10;
 
         protected override async Task OnInitializedAsync()
         {
             await LoadAsync();
         }
 
+        private async Task SelectedRecordsNumberAsync(int recordsnumber)
+        {
+            RecordsNumber = recordsnumber;
+            int page = 1;
+            await LoadAsync(page);
+            await SelectedPageAsync(page);
+        }
+
+        private async Task FilterCallBack(string filter)
+        {
+            Filter = filter;
+            await ApplyFilterAsync();
+            StateHasChanged();
+        }
         private async Task SelectedPageAsync(int page)
         {
             if (!string.IsNullOrWhiteSpace(Page))
@@ -50,9 +64,18 @@ namespace SEGES.FrontEnd.Pages.States
             }
         }
 
+        private void ValidateRecordsNumber()
+        {
+            if (RecordsNumber == 0)
+            {
+                RecordsNumber = 10;
+            }
+        }
+
         private async Task LoadPagesAsync()
         {
-            var url = $"api/cities/totalPages?id={StateId}";
+            ValidateRecordsNumber();
+            var url = $"api/cities/totalPages?id={StateId}&recordsnumber={RecordsNumber}";
             if (!string.IsNullOrEmpty(Filter))
             {
                 url += $"&filter={Filter}";
@@ -70,7 +93,8 @@ namespace SEGES.FrontEnd.Pages.States
 
         private async Task<bool> LoadCitiesAsync(int page)
         {
-            var url = $"api/cities?id={StateId}&page={page}";
+            ValidateRecordsNumber();
+            var url = $"api/cities?id={StateId}&page={page}&recordsnumber={RecordsNumber}";
             if (!string.IsNullOrEmpty(Filter))
             {
                 url += $"&filter={Filter}";
@@ -85,12 +109,6 @@ namespace SEGES.FrontEnd.Pages.States
             }
             cities = responseHttp.Response;
             return true;
-        }
-
-        private async Task CleanFilterAsync()
-        {
-            Filter = string.Empty;
-            await ApplyFilterAsync();
         }
 
         private async Task ApplyFilterAsync()
@@ -123,8 +141,8 @@ namespace SEGES.FrontEnd.Pages.States
         {
             var result = await SweetAlertService.FireAsync(new SweetAlertOptions
             {
-                Title = "Confirmaci�n",
-                Text = $"�Realmente deseas eliminar la ciudad? {city.Name}",
+                Title = "Confirmación",
+                Text = $"¿Realmente deseas eliminar la ciudad? {city.Name}",
                 Icon = SweetAlertIcon.Question,
                 ShowCancelButton = true,
                 CancelButtonText = "No",
@@ -156,8 +174,7 @@ namespace SEGES.FrontEnd.Pages.States
                 ShowConfirmButton = true,
                 Timer = 3000
             });
-            await toast.FireAsync(icon: SweetAlertIcon.Success, message: "Registro borrado con �xito.");
+            await toast.FireAsync(icon: SweetAlertIcon.Success, message: "Registro borrado con éxito.");
         }
     }
 }
-

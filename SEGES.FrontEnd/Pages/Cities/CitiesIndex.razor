@@ -6,15 +6,16 @@
     <a class="btn btn-primary" href="/cities/create">Nueva Ciudad</a>
 </div>
 
+   
+<div class="card-body">
+    <Filter PlaceHolder="Buscar a." Callback=@FilterCallBack />
+    <GenericList2 MyList="Cities">
+        <Body>
+            <Pagination CurrentPage="currentPage"
+                        TotalPages="totalPages"
+                        SelectedPage="SelectedPageAsync"
+                        RecordsNumber="SelectedRecordsNumberAsync" />
 
-<div>
-<GenericList2 MyList="Cities">
-    <Loading>
-        <div class="d-flex justify-content-center align-itmes-center">
-            <img src="https://i.gifer.com/ZKZg.gif" alt="Cargando..." />
-        </div>
-    </Loading>
-    <Body>
         <table class="table table-striped">
             <thead>
                 <tr>

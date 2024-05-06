@@ -38,8 +38,11 @@ builder.Services.AddScoped<IHuApprovalStatusUnitOfWork, HuApprovalStatusUnitOfWo
 builder.Services.AddScoped<IHUPrioritiesRepository, HUPrioritiesRepository>();
 builder.Services.AddScoped<IHUPrioritiesUnitOfWork, HUPrioritiesUnitOfWork>();
 
+builder.Services.AddScoped<IHUStatusRepository, HUStatusRepository>();
+builder.Services.AddScoped<IHUStatusUnitOfWork, HUStatusUnitOfWork>();
 
-
+builder.Services.AddScoped<IProjectStatusesRepository, ProjectStatusesRepository>();
+builder.Services.AddScoped<IProjectStatusesUnitOfWork, ProjectStatusesUnitOfWork>();
 
 builder.Services.AddTransient<SeedDb>();
 
