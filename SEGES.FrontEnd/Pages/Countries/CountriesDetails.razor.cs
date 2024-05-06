@@ -95,7 +95,6 @@ namespace SEGES.FrontEnd.Pages.Countries
         {
             ValidateRecordsNumber();
             var url = $"api/states?id={CountryId}&page={page}&recordsnumber={RecordsNumber}";
-
             if (!string.IsNullOrEmpty(Filter))
             {
                 url += $"&filter={Filter}";
