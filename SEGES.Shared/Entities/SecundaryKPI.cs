@@ -26,7 +26,7 @@ namespace SEGES.Shared.Entities
 
         public DateTime CreationDate { get; set; }
 
-        public int KPI_Id { get; set; }
+       // public int KPI_Id { get; set; }
         public KPI KPI { get; set; }
     }
 }

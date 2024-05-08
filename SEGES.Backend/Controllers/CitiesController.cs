@@ -1,20 +1,15 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SEGES.Shared.DTOs;
 using SEGES.Shared.Entities;
-using SEGES.Shared;
-using Microsoft.EntityFrameworkCore;
-using System.Text.Json.Serialization;
-using System.Text.Json;
-using System.Linq;
 using SEGES.Backend.UnitsOfWork.Interfaces;
-using SEGES.Backend.Repositories.Interfaces;
-using SEGES.Backend.UnitsOfWork.Implementations;
-using SEGES.Backend.Repositories.Implementations;
+
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace SEGES.Backend.Controllers
 {
     [ApiController]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [Route("api/[controller]")]
     public class CitiesController : GenericController<City>
     {

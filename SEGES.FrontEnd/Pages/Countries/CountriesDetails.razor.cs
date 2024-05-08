@@ -1,4 +1,5 @@
 using CurrieTechnologies.Razor.SweetAlert2;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components;
 using SEGES.FrontEnd.Repositories;
 using SEGES.Shared.Entities;
@@ -6,6 +7,7 @@ using System.Net;
 
 namespace SEGES.FrontEnd.Pages.Countries
 {
+    [Authorize(Roles = "Admin")]
     public partial class CountriesDetails
     {
         private Country? country;

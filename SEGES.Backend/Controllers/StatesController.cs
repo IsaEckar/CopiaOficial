@@ -3,10 +3,12 @@ using SEGES.Shared.Entities;
 using SEGES.Shared.DTOs;
 using SEGES.Backend.UnitsOfWork.Interfaces;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace SEGES.Backend.Controllers
 {
     [ApiController]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [Route("api/[controller]")]
     public class StatesController : GenericController<State>
     {

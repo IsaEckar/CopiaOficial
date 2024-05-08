@@ -1,21 +1,60 @@
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using SEGES.Backend.Repositories.Implementations;
 using SEGES.Backend.Repositories.Interfaces;
 using SEGES.Backend.UnitsOfWork.Implementations;
 using SEGES.Backend.UnitsOfWork.Interfaces;
-using SEGES.Shared;
+
+using SEGES.Shared.Entities;
 using System.Text.Json.Serialization;
+using SEGES.Backend;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
-
-builder.Services.AddControllers().AddJsonOptions(x => x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
+builder.Services
+    .AddControllers()
+    .AddJsonOptions(x => x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddDbContext<DataContext>(options =>
+
+builder.Services.AddSwaggerGen(c =>
 {
-    options.UseSqlServer(builder.Configuration.GetConnectionString("SIEGESConnection"));
+    c.SwaggerDoc("v1", new OpenApiInfo { Title = "SEGES Backend", Version = "v1" });
+    c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    {
+        Description = @"JWT Authorization header using the Bearer scheme. <br /> <br />
+                      Enter 'Bearer' [space] and then your token in the text input below.<br /> <br />
+                      Example: 'Bearer 12345abcdef'<br /> <br />",
+        Name = "Authorization",
+        In = ParameterLocation.Header,
+        Type = SecuritySchemeType.ApiKey,
+        Scheme = "Bearer"
+    });
+    c.AddSecurityRequirement(new OpenApiSecurityRequirement()
+      {
+        {
+          new OpenApiSecurityScheme
+          {
+            Reference = new OpenApiReference
+              {
+                Type = ReferenceType.SecurityScheme,
+                Id = "Bearer"
+              },
+              Scheme = "oauth2",
+              Name = "Bearer",
+              In = ParameterLocation.Header,
+            },
+            new List<string>()
+          }
+        });
 });
+
+builder.Services.AddDbContext<DataContext>(x => x.UseSqlServer("name=SIEGESConnection"));
+builder.Services.AddTransient<SeedDb>();
 
 builder.Services.AddScoped(typeof(IGenericUnitOfWork<>), typeof(GenericUnitOfWork<>));
 builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
@@ -44,26 +83,57 @@ builder.Services.AddScoped<IHUStatusUnitOfWork, HUStatusUnitOfWork>();
 builder.Services.AddScoped<IProjectStatusesRepository, ProjectStatusesRepository>();
 builder.Services.AddScoped<IProjectStatusesUnitOfWork, ProjectStatusesUnitOfWork>();
 
-builder.Services.AddTransient<SeedDb>();
+builder.Services.AddScoped<IUsersRepository, UsersRepository>();
+builder.Services.AddScoped<IUsersUnitOfWork, UsersUnitOfWork>();
+
+
+
+builder.Services.AddIdentity<User, IdentityRole>(x =>
+{
+    x.User.RequireUniqueEmail = true;
+    x.Password.RequireDigit = false;
+    x.Password.RequiredUniqueChars = 0;
+    x.Password.RequireLowercase = false;
+    x.Password.RequireNonAlphanumeric = false;
+    x.Password.RequireUppercase = false;
+})
+    .AddEntityFrameworkStores<DataContext>()
+    .AddDefaultTokenProviders();
+
+
+
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(x => x.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuer = false,
+        ValidateAudience = false,
+        ValidateLifetime = true,
+        ValidateIssuerSigningKey = true,
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["jwtKey"]!)),
+        ClockSkew = TimeSpan.Zero
+    });
 
 var app = builder.Build();
-app.UseCors(x => x
-.AllowAnyMethod()
-.AllowAnyHeader()
-.SetIsOriginAllowed(o => true)
-.AllowCredentials());
-
 SeedData(app);
 
 void SeedData(WebApplication app)
 {
     var scopedFactory = app.Services.GetService<IServiceScopeFactory>();
-    using var scope = scopedFactory!.CreateScope();
-    var service = scope.ServiceProvider.GetService<SeedDb>();
-    service!.SeedAsync().Wait();
+
+    using (var scope = scopedFactory!.CreateScope())
+    {
+        var service = scope.ServiceProvider.GetService<SeedDb>();
+        service!.SeedAsync().Wait();
+    }
 }
 
-// Configure the HTTP request pipeline.
+
+app.UseCors(x => x
+    .AllowAnyMethod()
+    .AllowAnyHeader()
+    .SetIsOriginAllowed(origin => true)
+    .AllowCredentials());
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -71,10 +141,6 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
 app.UseAuthorization();
-
 app.MapControllers();
-
-
 app.Run();

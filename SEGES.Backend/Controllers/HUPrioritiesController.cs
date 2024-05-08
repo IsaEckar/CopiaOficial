@@ -10,15 +10,15 @@ namespace SEGES.Backend.Controllers
     [Route("api/[Controller]")]
     public class HUPrioritiesController : GenericController<HUPriority>
     {
-        private readonly IHUPrioritiesRepository _repository;
-        public HUPrioritiesController(IGenericUnitOfWork<HUPriority> unitOfWork, IHUPrioritiesRepository repository) : base(unitOfWork)
+        private readonly IHUPrioritiesUnitOfWork _huPrioritiesUnitOfWork;
+        public HUPrioritiesController(IGenericUnitOfWork<HUPriority> unitOfWork, IHUPrioritiesUnitOfWork huPrioritiesUnitOfWork) : base(unitOfWork)
         {
-            _repository = repository;
+            _huPrioritiesUnitOfWork = huPrioritiesUnitOfWork;
         }
         [HttpGet("full")]
         public override async Task<IActionResult> GetAsync()
         {
-            var action = await _repository.GetAsync();
+            var action = await _huPrioritiesUnitOfWork.GetAsync();
             if (action.WasSuccess)
             {
                 return Ok(action.Result);
@@ -29,7 +29,7 @@ namespace SEGES.Backend.Controllers
         [HttpGet]
         public override async Task<IActionResult> GetAsync(PaginationDTO pagination)
         {
-            var response = await _repository.GetAsync(pagination);
+            var response = await _huPrioritiesUnitOfWork.GetAsync(pagination);
             if (response.WasSuccess)
             {
                 return Ok(response.Result);
@@ -40,7 +40,7 @@ namespace SEGES.Backend.Controllers
         [HttpGet("{id}")]
         public override async Task<IActionResult> GetAsync(int id)
         {
-            var response = await _repository.GetAsync(id);
+            var response = await _huPrioritiesUnitOfWork.GetAsync(id);
             if (response.WasSuccess)
             {
                 return Ok(response.Result);
@@ -51,7 +51,7 @@ namespace SEGES.Backend.Controllers
         [HttpGet("totalPages")]
         public override async Task<IActionResult> GetPagesAsync([FromQuery] PaginationDTO pagination)
         {
-            var action = await _repository.GetTotalPagesAsync(pagination);
+            var action = await _huPrioritiesUnitOfWork.GetTotalPagesAsync(pagination);
             if (action.WasSuccess)
             {
                 return Ok(action.Result);

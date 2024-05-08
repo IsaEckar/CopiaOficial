@@ -3,10 +3,12 @@ using Microsoft.AspNetCore.Components;
 using SEGES.FrontEnd.Repositories;
 using System.Net;
 using SEGES.Shared.Entities;
+using Microsoft.AspNetCore.Authorization;
 
 
 namespace SEGES.FrontEnd.Pages.Countries
 {
+    [Authorize(Roles = "Admin")]
     public partial class CountriesIndex
     {
         private int currentPage = 1;

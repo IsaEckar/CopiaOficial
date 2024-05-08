@@ -1,4 +1,5 @@
 using CurrieTechnologies.Razor.SweetAlert2;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components;
 using SEGES.FrontEnd.Repositories;
 using SEGES.FrontEnd.Shared;
@@ -6,6 +7,8 @@ using SEGES.Shared.Entities;
 
 namespace SEGES.FrontEnd.Pages.States
 {
+
+    [Authorize(Roles = "Admin")]
     public partial class StatesCreate
     {
         private State state = new();
@@ -16,6 +19,7 @@ namespace SEGES.FrontEnd.Pages.States
         [Inject] private NavigationManager NavigationManager { get; set; } = null!;
         [Parameter] public int CountryId { get; set; }
 
+
         private async Task CreateAsync()
         {
             state.CountryId = CountryId;
@@ -23,12 +27,10 @@ namespace SEGES.FrontEnd.Pages.States
             if (responseHttp.Error)
             {
                 var message = await responseHttp.GetErrorMessageAsync();
-                await SweetAlertService.FireAsync("Error", message);
+                await SweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
                 return;
             }
-
             Return();
-
             var toast = SweetAlertService.Mixin(new SweetAlertOptions
             {
                 Toast = true,
@@ -36,15 +38,13 @@ namespace SEGES.FrontEnd.Pages.States
                 ShowConfirmButton = true,
                 Timer = 3000
             });
-            await toast.FireAsync(icon: SweetAlertIcon.Success, message: "Registro creado con �xito");
-
-
+            await toast.FireAsync(icon: SweetAlertIcon.Success, message: "Registro creado con éxito.");
         }
 
         private void Return()
         {
             stateForm!.FormPostedSuccessfully = true;
-            NavigationManager.NavigateTo("/states");
+            NavigationManager.NavigateTo($"/countries/details/{CountryId}");
         }
     }
 }
