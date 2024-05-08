@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
+using SEGES.Backend.Helpers;
 using SEGES.Backend.UnitsOfWork.Interfaces;
 using SEGES.Shared.DTOs;
 using SEGES.Shared.Entities;
+using SEGES.Shared.Responses;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -15,26 +17,61 @@ namespace SEGES.Backend.Controllers
     {
         private readonly IUsersUnitOfWork _usersUnitOfWork;
         private readonly IConfiguration _configuration;
+        private readonly IFileStorage _fileStorage;
+     //   private readonly IMailHelper _mailHelper;
+        private readonly string _container;
 
-        public AccountsController(IUsersUnitOfWork usersUnitOfWork, IConfiguration configuration)
+        public AccountsController(IUsersUnitOfWork usersUnitOfWork, IConfiguration configuration, IFileStorage fileStorage )
         {
             _usersUnitOfWork = usersUnitOfWork;
             _configuration = configuration;
+            _fileStorage = fileStorage;
+          //  _mailHelper = mailHelper;
+            _container = "users";
         }
+
 
         [HttpPost("CreateUser")]
         public async Task<IActionResult> CreateUser([FromBody] UserDTO model)
         {
             User user = model;
+            if (!string.IsNullOrEmpty(model.Photo))
+            {
+                var photoUser = Convert.FromBase64String(model.Photo);
+                model.Photo = await _fileStorage.SaveFileAsync(photoUser, ".jpg", _container);
+            }
+
             var result = await _usersUnitOfWork.AddUserAsync(user, model.Password);
             if (result.Succeeded)
             {
                 await _usersUnitOfWork.AddUserToRoleAsync(user, user.UserType.ToString());
                 return Ok(BuildToken(user));
+                /* var response = await SendConfirmationEmailAsync(user);
+                 if (response.WasSuccess)
+                 {
+                     return NoContent();
+                 }
+
+                 return BadRequest(response.Message);*/
             }
 
             return BadRequest(result.Errors.FirstOrDefault());
         }
+     /*   private async Task<ActionResponse<string>> SendConfirmationEmailAsync(User user)
+        {
+            var myToken = await _usersUnitOfWork.GenerateEmailConfirmationTokenAsync(user);
+            var tokenLink = Url.Action("ConfirmEmail", "accounts", new
+            {
+                userid = user.Id,
+                token = myToken
+            }, HttpContext.Request.Scheme, _configuration["Url Frontend"]);
+
+            return _mailHelper.SendMail(user.FullName, user.Email!,
+                $"Orders - Confirmación de cuenta",
+                $"<h1>Orders - Confirmación de cuenta</h1>" +
+                $"<p>Para habilitar el usuario, por favor hacer clic 'Confirmar Email':</p>" +
+                $"<b><a href ={tokenLink}>Confirmar Email</a></b>");
+        }*/
 
         [HttpPost("Login")]
         public async Task<IActionResult> LoginAsync([FromBody] LoginDTO model)

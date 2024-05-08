@@ -20,6 +20,7 @@ namespace SEGES.Backend.UnitsOfWork.Interfaces
         Task<SignInResult> LoginAsync(LoginDTO model);
 
         Task LogoutAsync();
+       // Task<string> GenerateEmailConfirmationTokenAsync(User user);
     }
 
 }
