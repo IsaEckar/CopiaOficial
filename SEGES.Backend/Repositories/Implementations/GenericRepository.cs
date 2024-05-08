@@ -30,7 +30,6 @@ namespace SEGES.Backend.Repositories.Implementations
                     .ToListAsync()
             };
         }
-
         public virtual async Task<ActionResponse<int>> GetTotalPagesAsync(PaginationDTO pagination)
         {
             var queryable = _entity.AsQueryable();
@@ -88,7 +87,6 @@ namespace SEGES.Backend.Repositories.Implementations
                     Message = "Registro no encontrado"
                 };
             }
-
             try
             {
                 _entity.Remove(row);
@@ -135,7 +133,6 @@ namespace SEGES.Backend.Repositories.Implementations
                 Result = await _entity.ToListAsync()
             };
         }
-
         public virtual async Task<ActionResponse<T>> UpdateAsync(T entity)
         {
             _context.Update(entity);

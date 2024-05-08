@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using SEGES.Backend.Repositories.Interfaces;
 using SEGES.Backend.UnitsOfWork.Interfaces;
 using SEGES.Shared.DTOs;
@@ -6,8 +8,9 @@ using SEGES.Shared.Entities;
 
 namespace SEGES.Backend.Controllers
 {
-    [ApiController]
-    [Route("api/[Controller]")]
+      [ApiController]
+   // [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    [Route("api/[controller]")]
     public class DocTraceabilityTypeController : GenericController<DocTraceabilityType>
     {
         private readonly IDocTraceabilityTypesUnitOfWork _docTraceabilityTypesUnitOfWork;
