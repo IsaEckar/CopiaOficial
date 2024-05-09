@@ -1,22 +1,22 @@
 using CurrieTechnologies.Razor.SweetAlert2;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components;
 using SEGES.FrontEnd.Repositories;
 using SEGES.FrontEnd.Services;
-using SEGES.Shared.DTOs;
 using SEGES.Shared.Entities;
-using SEGES.Shared.Enums;
+using System.Net;
+
 
 namespace SEGES.FrontEnd.Pages.Auth
 {
-    public partial class Register
+    [Authorize]
+    public partial class EditUser
     {
-        private UserDTO userDTO = new();
+        private User? user;
         private List<Country>? countries;
         private List<State>? states;
         private List<City>? cities;
-        private bool loading;
         private string? imageUrl;
-
 
         [Inject] private NavigationManager NavigationManager { get; set; } = null!;
         [Inject] private SweetAlertService SweetAlertService { get; set; } = null!;
@@ -25,12 +25,56 @@ namespace SEGES.FrontEnd.Pages.Auth
 
         protected override async Task OnInitializedAsync()
         {
+            await LoadUserAsyc();
             await LoadCountriesAsync();
+            await LoadStatesAsyn(user!.City!.State!.Country!.CountryId);
+            await LoadCitiesAsyn(user!.City!.State!.StateId);
+
+            if (!string.IsNullOrEmpty(user!.Photo))
+            {
+                imageUrl = user.Photo;
+                user.Photo = null;
+            }
         }
+
+        private async Task LoadUserAsyc()
+        {
+            var responseHttp = await Repository.GetAsync<User>($"/api/accounts");
+            if (responseHttp.Error)
+            {
+                if (responseHttp.HttpResponseMessage.StatusCode == HttpStatusCode.NotFound)
+                {
+                    NavigationManager.NavigateTo("/");
+                    return;
+                }
+                var messageError = await responseHttp.GetErrorMessageAsync();
+                await SweetAlertService.FireAsync("Error", messageError, SweetAlertIcon.Error);
+                return;
+            }
+            user = responseHttp.Response;
+        }
+
         private void ImageSelected(string imagenBase64)
         {
-            userDTO.Photo = imagenBase64;
+            user!.Photo = imagenBase64;
             imageUrl = null;
+        }
+
+        private async Task CountryChangedAsync(ChangeEventArgs e)
+        {
+            var selectedCountry = Convert.ToInt32(e.Value!);
+            states = null;
+            cities = null;
+            user!.CityId = 0;
+            await LoadStatesAsyn(selectedCountry);
+        }
+
+        private async Task StateChangedAsync(ChangeEventArgs e)
+        {
+            var selectedState = Convert.ToInt32(e.Value!);
+            cities = null;
+            user!.CityId = 0;
+            await LoadCitiesAsyn(selectedState);
         }
 
         private async Task LoadCountriesAsync()
@@ -42,17 +86,7 @@ namespace SEGES.FrontEnd.Pages.Auth
                 await SweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
                 return;
             }
-
             countries = responseHttp.Response;
-        }
-
-        private async Task CountryChangedAsync(ChangeEventArgs e)
-        {
-            var selectedCountry = Convert.ToInt32(e.Value!);
-            states = null;
-            cities = null;
-            userDTO.CityId = 0;
-            await LoadStatesAsyn(selectedCountry);
         }
 
         private async Task LoadStatesAsyn(int countryId)
@@ -64,16 +98,7 @@ namespace SEGES.FrontEnd.Pages.Auth
                 await SweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
                 return;
             }
-
             states = responseHttp.Response;
-        }
-
-        private async Task StateChangedAsync(ChangeEventArgs e)
-        {
-            var selectedState = Convert.ToInt32(e.Value!);
-            cities = null;
-            userDTO.CityId = 0;
-            await LoadCitiesAsyn(selectedState);
         }
 
         private async Task LoadCitiesAsyn(int stateId)
@@ -89,15 +114,9 @@ namespace SEGES.FrontEnd.Pages.Auth
             cities = responseHttp.Response;
         }
 
-
-        private async Task CreteUserAsync()
+        private async Task SaveUserAsync()
         {
-            userDTO.UserName = userDTO.Email;
-            userDTO.UserType = UserType.User;
-            loading = true;
-            var responseHttp = await Repository.PostAsync<UserDTO, TokenDTO>("/api/accounts/CreateUser", userDTO);
-            loading = false;
-
+            var responseHttp = await Repository.PutAsync("/api/accounts", user!);
             if (responseHttp.Error)
             {
                 var message = await responseHttp.GetErrorMessageAsync();
@@ -105,7 +124,6 @@ namespace SEGES.FrontEnd.Pages.Auth
                 return;
             }
 
-            await LoginService.LoginAsync(responseHttp.Response!.Token);
             NavigationManager.NavigateTo("/");
         }
     }

@@ -4,6 +4,7 @@ using SEGES.Shared.DTOs;
 using SEGES.Backend.UnitsOfWork.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using System.Threading.Tasks;
 
 namespace SEGES.Backend.Controllers
 {

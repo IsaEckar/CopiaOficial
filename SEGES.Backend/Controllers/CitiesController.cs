@@ -2,9 +2,10 @@
 using SEGES.Shared.DTOs;
 using SEGES.Shared.Entities;
 using SEGES.Backend.UnitsOfWork.Interfaces;
-
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using System.Threading.Tasks;
+
 
 namespace SEGES.Backend.Controllers
 {
@@ -19,6 +20,7 @@ namespace SEGES.Backend.Controllers
         {
             _citiesUnitOfWork = citiesUnitOfWork;
         }
+
         [AllowAnonymous]
         [HttpGet("combo/{stateId:int}")]
         public async Task<IActionResult> GetComboAsync(int stateId)

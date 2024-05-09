@@ -7,8 +7,6 @@ namespace SEGES.Shared.Entities
 {
     public class User : IdentityUser
     {
-      //  public int UserId { get; set; }
-
         [Display(Name = "Documento")]
         [MaxLength(20, ErrorMessage = "El campo {0} debe tener máximo {1} caractéres.")]
         [Required(ErrorMessage = "El campo {0} es obligatorio.")]
@@ -41,7 +39,7 @@ namespace SEGES.Shared.Entities
 
         [Display(Name = "Ciudad")]
         [Range(1, int.MaxValue, ErrorMessage = "Debes seleccionar una {0}.")]
-        public int City_Id { get; set; }
+        public int CityId { get; set; }
 
         [Display(Name = "Usuario")]
         public string FullName => $"{FirstName} {LastName}";

@@ -1,6 +1,8 @@
 ﻿using SEGES.Shared.DTOs;
 using SEGES.Shared.Entities;
 using SEGES.Shared.Responses;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace SEGES.Backend.Repositories.Interfaces
 {

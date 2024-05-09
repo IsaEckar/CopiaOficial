@@ -1,12 +1,20 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using SEGES.Shared.DTOs;
 using SEGES.Shared.Entities;
+using System.Threading.Tasks;
+using System;
 
 namespace SEGES.Backend.Repositories.Interfaces
 {
     public interface IUsersRepository
     {
         Task<User> GetUserAsync(string email);
+
+        Task<User> GetUserAsync(Guid userId);
+
+        Task<IdentityResult> ChangePasswordAsync(User user, string currentPassword, string newPassword);
+
+        Task<IdentityResult> UpdateUserAsync(User user);
 
         Task<IdentityResult> AddUserAsync(User user, string password);
 

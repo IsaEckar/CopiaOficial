@@ -32,7 +32,7 @@ namespace SEGES.Backend
                 ""Aprobación finalizada"",
                 ""Aprobación automática""
             ]";
-   
+
         public async Task SeedAsync()
         {
             await _context.Database.EnsureCreatedAsync();
@@ -42,13 +42,13 @@ namespace SEGES.Backend
             await CheckCitiesAsync();
             await CheckRolesAsync();
             await CheckUserAsync("1010", "admin", "prueba", "admin@yopmail.com", "555555", "direcion prueba", UserType.Admin);
-         /*   await CheckDocTraceabilityType();
+            await CheckDocTraceabilityType();
             await CheckHUApprobalStatus();
             await CheckHUPriority();
             await CheckHUPublicationStatus();
             await CheckHUStatus();
-            await CheckProjectStatus();*/
-           // await CheckRoles();
+            await CheckProjectStatus();
+            // await CheckRoles();
         }
 
         private async Task CheckRolesAsync()

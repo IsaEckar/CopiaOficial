@@ -1,11 +1,11 @@
 ﻿using SEGES.Backend.UnitsOfWork.Implementations;
 using SEGES.Shared.Entities;
 using SEGES.Shared.Responses;
-using SEGES.Shared;
 using Microsoft.EntityFrameworkCore;
 using SEGES.Backend.Repositories.Interfaces;
 using SEGES.Backend.Helpers;
 using SEGES.Shared.DTOs;
+
 
 namespace SEGES.Backend.Repositories.Implementations
 {

@@ -4,7 +4,6 @@ using SEGES.Backend.Repositories.Implementations;
 using SEGES.Backend.Repositories.Interfaces;
 using SEGES.Backend.UnitsOfWork.Implementations;
 using SEGES.Backend.UnitsOfWork.Interfaces;
-
 using SEGES.Shared.Entities;
 using System.Text.Json.Serialization;
 using SEGES.Backend;
@@ -14,9 +13,12 @@ using System.Text;
 using Microsoft.OpenApi.Models;
 using SEGES.Backend.Helpers;
 
+
+
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services
+builder
+    .Services
     .AddControllers()
     .AddJsonOptions(x => x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
 builder.Services.AddEndpointsApiExplorer();
@@ -103,7 +105,6 @@ builder.Services.AddIdentity<User, IdentityRole>(x =>
     .AddDefaultTokenProviders();
 
 
-
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(x => x.TokenValidationParameters = new TokenValidationParameters
     {
@@ -129,7 +130,6 @@ void SeedData(WebApplication app)
     }
 }
 
-
 app.UseCors(x => x
     .AllowAnyMethod()
     .AllowAnyHeader()
@@ -145,4 +145,4 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseAuthorization();
 app.MapControllers();
-app.Run();
+app.Run(); ;

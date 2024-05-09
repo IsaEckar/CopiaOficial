@@ -1,4 +1,6 @@
-﻿namespace SEGES.Backend.Helpers
+﻿using System.Threading.Tasks;
+
+namespace SEGES.Backend.Helpers
 {
     public interface IFileStorage
     {
