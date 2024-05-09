@@ -157,7 +157,7 @@ namespace SEGES.Backend.Controllers
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["jwtKey"]!));
             var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-            var expiration = DateTime.UtcNow.AddDays(30);
+            var expiration = DateTime.UtcNow.AddDays(15);
             var token = new JwtSecurityToken(
                 issuer: null,
                 audience: null,
