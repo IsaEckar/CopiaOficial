@@ -8,6 +8,8 @@ namespace SEGES.Backend.Repositories.Interfaces
 {
     public interface IUsersRepository
     {
+        Task<string> GenerateEmailConfirmationTokenAsync(User user);
+        Task<IdentityResult> ConfirmEmailAsync(User user, string token);
         Task<User> GetUserAsync(string email);
 
         Task<User> GetUserAsync(Guid userId);

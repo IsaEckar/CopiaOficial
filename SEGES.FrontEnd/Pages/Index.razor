@@ -4,10 +4,10 @@
 
 <AuthorizeView Roles="Admin">
     <Authorized>
-        <p>Estas autenticado y autorizado, @context.User.Identity?.Name</p>
+        <p> @context.User.Identity?.Name</p>
     </Authorized>
     <NotAuthorized>
-        <p>No estas autorizado</p>
+        @* <p>No estas autorizado</p>*@
     </NotAuthorized>
 </AuthorizeView>
 

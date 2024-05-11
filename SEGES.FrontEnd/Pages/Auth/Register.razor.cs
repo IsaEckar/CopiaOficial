@@ -89,13 +89,12 @@ namespace SEGES.FrontEnd.Pages.Auth
             cities = responseHttp.Response;
         }
 
-
         private async Task CreteUserAsync()
         {
             userDTO.UserName = userDTO.Email;
             userDTO.UserType = UserType.User;
             loading = true;
-            var responseHttp = await Repository.PostAsync<UserDTO, TokenDTO>("/api/accounts/CreateUser", userDTO);
+            var responseHttp = await Repository.PostAsync<UserDTO>("/api/accounts/CreateUser", userDTO);
             loading = false;
 
             if (responseHttp.Error)
@@ -105,7 +104,7 @@ namespace SEGES.FrontEnd.Pages.Auth
                 return;
             }
 
-            await LoginService.LoginAsync(responseHttp.Response!.Token);
+            await SweetAlertService.FireAsync("Confirmación", "Su cuenta ha sido creada con Éxito. Se te ha enviado un correo electrónico con las instrucciones para activar tu usuario.", SweetAlertIcon.Info);
             NavigationManager.NavigateTo("/");
         }
     }
