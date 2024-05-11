@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components;
 using SEGES.FrontEnd.Repositories;
 using SEGES.FrontEnd.Services;
+using SEGES.Shared.DTOs;
 using SEGES.Shared.Entities;
 using System.Net;
 
@@ -29,7 +30,7 @@ namespace SEGES.FrontEnd.Pages.Auth
             await LoadCountriesAsync();
             await LoadStatesAsyn(user!.City!.State!.Country!.CountryId);
             await LoadCitiesAsyn(user!.City!.State!.StateId);
-
+           
             if (!string.IsNullOrEmpty(user!.Photo))
             {
                 imageUrl = user.Photo;
@@ -116,15 +117,15 @@ namespace SEGES.FrontEnd.Pages.Auth
 
         private async Task SaveUserAsync()
         {
-            var responseHttp = await Repository.PutAsync("/api/accounts", user!);
+            var responseHttp = await Repository.PutAsync<User, TokenDTO>("/api/accounts", user!);
             if (responseHttp.Error)
             {
                 var message = await responseHttp.GetErrorMessageAsync();
                 await SweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
                 return;
             }
-
-            NavigationManager.NavigateTo("/");
-        }
+                await LoginService.LoginAsync(responseHttp.Response!.Token);
+                NavigationManager.NavigateTo("/");
+            }
     }
 }
