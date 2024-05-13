@@ -1,7 +1,11 @@
+using Blazored.Modal;
+using Blazored.Modal.Services;
 using CurrieTechnologies.Razor.SweetAlert2;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components;
+using SEGES.FrontEnd.Pages.States;
 using SEGES.FrontEnd.Repositories;
+using SEGES.FrontEnd.Shared;
 using SEGES.Shared.Entities;
 using System.Net;
 
@@ -14,6 +18,7 @@ namespace SEGES.FrontEnd.Pages.Countries
         private List<State>? states;
         private int currentPage = 1;
         private int totalPages;
+        private FormWithName<Country>? countryForm;
 
         [Inject] private NavigationManager NavigationManager { get; set; } = null!;
         [Inject] private SweetAlertService SweetAlertService { get; set; } = null!;
@@ -23,11 +28,33 @@ namespace SEGES.FrontEnd.Pages.Countries
         [Parameter, SupplyParameterFromQuery] public string Page { get; set; } = string.Empty;
         [Parameter, SupplyParameterFromQuery] public string Filter { get; set; } = string.Empty;
         [Parameter, SupplyParameterFromQuery] public int RecordsNumber { get; set; } = 10;
+        [CascadingParameter] IModalService Modal { get; set; } = default!;
 
         protected override async Task OnInitializedAsync()
         {
             await LoadAsync();
         }
+
+        private async Task ShowModalAsync(int id = 0, bool isEdit = false)
+        {
+            IModalReference modalReference;
+
+            if (isEdit)
+            {
+                modalReference = Modal.Show<StateEdit>(string.Empty, new ModalParameters().Add("StateId", id));
+            }
+            else
+            {
+                modalReference = Modal.Show<StatesCreate>(string.Empty, new ModalParameters().Add("CountryId", CountryId));
+            }
+
+            var result = await modalReference.Result;
+            if (result.Confirmed)
+            {
+                await LoadAsync();
+            }
+        }
+
 
         private async Task SelectedRecordsNumberAsync(int recordsnumber)
         {
@@ -43,6 +70,7 @@ namespace SEGES.FrontEnd.Pages.Countries
             await ApplyFilterAsync();
             StateHasChanged();
         }
+
         private async Task ApplyFilterAsync()
         {
             int page = 1;
@@ -121,12 +149,11 @@ namespace SEGES.FrontEnd.Pages.Countries
             return true;
         }
 
-     
 
         private async Task<bool> LoadCountryAsync()
         {
             var responseHttp = await Repository.GetAsync<Country>($"/api/countries/{CountryId}");
-          
+
             if (responseHttp.Error)
             {
                 if (responseHttp.HttpResponseMessage.StatusCode == HttpStatusCode.NotFound)
@@ -182,5 +209,7 @@ namespace SEGES.FrontEnd.Pages.Countries
             });
             await toast.FireAsync(icon: SweetAlertIcon.Success, message: "Registro borrado con éxito.");
         }
+
+      
     }
 }
