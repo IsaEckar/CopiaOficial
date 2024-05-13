@@ -1,7 +1,7 @@
 ﻿@page "/Login"
 
 <div class="row">
-    <div class="col-6">
+    <div class="col-12">
 
         <EditForm Model="loginDTO" OnValidSubmit="LoginAsync">
             <DataAnnotationsValidator />
@@ -11,7 +11,7 @@
                     <span>
                         <i class="oi oi-account-login" /> Iniciar Sesión
                         <button class="btn btn-sm btn-primary float-end" @onclick=@(() => LoginAsync())><i class="bi bi-box-arrow-in-right" /> Iniciar Sesión</button>
-                    
+                        <button class="btn btn-sm mx-1 btn-danger float-end" @onclick=@(() => CloseModalAsync())><i class="bi bi-x-circle-fill" /> Cancelar</button>
                     </span>
                 </div>
                 <div class="card-body">

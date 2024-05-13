@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components;
+using Blazored.Modal.Services;
+using SEGES.FrontEnd.Pages.Auth;
 
 namespace SEGES.FrontEnd.Shared
 {
@@ -9,6 +11,7 @@ namespace SEGES.FrontEnd.Shared
 
         [CascadingParameter]
         private Task<AuthenticationState> AuthenticationStateTask { get; set; } = null!;
+        [CascadingParameter] IModalService Modal { get; set; } = default!;
 
         protected override async Task OnParametersSetAsync()
         {
@@ -19,6 +22,10 @@ namespace SEGES.FrontEnd.Shared
             {
                 photoUser = photoClaim.Value;
             }
+        }
+        private void ShowModal()
+        {
+            Modal.Show<Login>();
         }
     }
 }
