@@ -5,36 +5,30 @@ using SEGES.Shared.DTOs;
 
 namespace SEGES.FrontEnd.Pages.Auth
 {
-    public partial class ChangePassword
+    public partial class ResendConfirmationEmailToken
     {
-        private ChangePasswordDTO changePasswordDTO = new();
+        private EmailDTO emailDTO = new();
         private bool loading;
 
         [Inject] private NavigationManager NavigationManager { get; set; } = null!;
         [Inject] private SweetAlertService SweetAlertService { get; set; } = null!;
         [Inject] private IRepository Repository { get; set; } = null!;
 
-        private async Task ChangePasswordAsync()
+        private async Task ResendConfirmationEmailTokenAsync()
         {
             loading = true;
-            var responseHttp = await Repository.PostAsync("/api/accounts/changePassword", changePasswordDTO);
+            var responseHttp = await Repository.PostAsync("/api/accounts/ResedToken", emailDTO);
             loading = false;
             if (responseHttp.Error)
             {
                 var message = await responseHttp.GetErrorMessageAsync();
                 await SweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
+                loading = false;
                 return;
             }
 
-            NavigationManager.NavigateTo("/editUser");
-            var toast = SweetAlertService.Mixin(new SweetAlertOptions
-            {
-                Toast = true,
-                Position = SweetAlertPosition.BottomEnd,
-                ShowConfirmButton = true,
-                Timer = 3000
-            });
-            await toast.FireAsync(icon: SweetAlertIcon.Success, message: "Contraseña cambiada con éxito.");
+            await SweetAlertService.FireAsync("Confirmación", "Se te ha enviado un correo electrónico con las instrucciones para activar tu usuario.", SweetAlertIcon.Info);
+            NavigationManager.NavigateTo("/");
         }
     }
 }
